@@ -9,7 +9,8 @@ type Props = {};
 
 export default function Footer({}: Props) {
   const pathname = usePathname();
-  if (pathname === "/auth/register") return;
+  if (pathname === "/auth/register" || pathname === "/auth/new-verification")
+    return;
   const pathsToMinimize = ["/verify-email", "/sign-up", "/sign-in"];
   return (
     <footer className="bg-white flex-grow-0">

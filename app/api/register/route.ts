@@ -22,7 +22,7 @@ export async function POST(req: Request, res: Response) {
       data: {
         name,
         email,
-        password,
+        password: hashedPassword,
       },
     });
     // const verificationToken = await generateVerificationToken(email);

@@ -4,7 +4,8 @@ import { RegisterSchema } from "@/validations";
 import db from "@/db/db";
 import bcryptjs from "bcryptjs";
 import { getUserByEmail } from "@/lib/auth";
-import { signIn } from "@/auth";
+import { v4 as uuidv4 } from "uuid";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -24,7 +25,33 @@ export async function POST(req: Request, res: Response) {
         password,
       },
     });
+    // const verificationToken = await generateVerificationToken(email);
+    const token = uuidv4();
+    const expires = new Date(new Date().getTime() + 3600 * 1000);
 
+    const existingToken = await db.verificationToken.findFirst({
+      where: { email },
+    });
+    console.log("existingToken", existingToken);
+
+    if (existingToken) {
+      await db.verificationToken.delete({
+        where: {
+          id: existingToken.id,
+        },
+      });
+    }
+    const verificationToken = await db.verificationToken.create({
+      data: {
+        email,
+        token,
+        expires,
+      },
+    });
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token
+    );
     return NextResponse.json(
       { message: "Confirmation email sent" },
       { status: 200 }

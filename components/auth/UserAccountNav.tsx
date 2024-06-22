@@ -1,5 +1,4 @@
 "use client";
-import { User } from "@prisma/client";
 import React from "react";
 import {
   DropdownMenu,
@@ -12,12 +11,12 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { ExtendedUser } from "@/next-auth";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { User2 } from "lucide-react";
 interface UserAccountNavProps {
   user: ExtendedUser;
 }
 export default function UserAccountNav({ user }: UserAccountNavProps) {
-  console.log("USRACCOUNTNAVUSER>>", user);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="overflow-visible">
@@ -26,9 +25,15 @@ export default function UserAccountNav({ user }: UserAccountNavProps) {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="bg-white w-60" align="end">
+      <DropdownMenuContent className="bg-white" align="end">
         <div className="flex items-center justify-start gap-2 p-2">
-          <div className="flex flex-col space-y-0.5 leading-none">
+          <div className="flex items-center justify-between gap-3 leading-none">
+            <Avatar className="size-6">
+              <AvatarImage src={user.image || ""} alt="user-img" />
+              <AvatarFallback>
+                <User2 />
+              </AvatarFallback>
+            </Avatar>
             <p className="font-medium text-sm text-black">{user.email}</p>
           </div>
         </div>

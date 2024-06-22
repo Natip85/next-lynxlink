@@ -6,7 +6,6 @@ export async function PATCH(req: Request, res: Response) {
   try {
     const body = await req.json();
     const { token } = body;
-    console.log("BETOKEN>>", token);
 
     const existingToken = await db.verificationToken.findUnique({
       where: { token },

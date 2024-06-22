@@ -4,9 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { PRODUCT_CATEGORIES } from "./MobileNav";
 import NavItem from "./NavItem";
 
-type Props = {};
-
-export default function NavItems({}: Props) {
+export default function NavItems() {
   const [activeIndex, setActiveIndex] = useState<null | number>(null);
 
   useEffect(() => {

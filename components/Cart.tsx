@@ -16,9 +16,7 @@ import Image from "next/image";
 import { formatPrice } from "@/lib/formatters";
 import { ShoppingCart } from "lucide-react";
 
-type Props = {};
-
-export default function Cart({}: Props) {
+export default function Cart() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const itemCount = 5;
   useEffect(() => {

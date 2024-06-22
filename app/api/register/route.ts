@@ -25,14 +25,12 @@ export async function POST(req: Request, res: Response) {
         password: hashedPassword,
       },
     });
-    // const verificationToken = await generateVerificationToken(email);
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + 3600 * 1000);
 
     const existingToken = await db.verificationToken.findFirst({
       where: { email },
     });
-    console.log("existingToken", existingToken);
 
     if (existingToken) {
       await db.verificationToken.delete({
@@ -66,7 +64,7 @@ export async function POST(req: Request, res: Response) {
         }
       );
     } else {
-      console.log("ERROR>>>", error);
+      console.log("ERROR>", error);
 
       return NextResponse.json(
         { error: "An unexpected error occurred!" },

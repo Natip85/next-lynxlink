@@ -1,3 +1,4 @@
+"use client";
 import * as z from "zod";
 import React from "react";
 import {
@@ -15,17 +16,69 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/validations";
 import CardWrapper from "./CardWrapper";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
+
+type Inputs = z.infer<typeof LoginSchema>;
 
 export default function LoginForm() {
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const { mutate: login, isPending } = useMutation({
+    mutationFn: async ({ email, password }: Inputs) => {
+      const response = await axios.post("/api/login", {
+        email,
+        password,
+      });
+
+      return response.data;
+    },
+  });
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
-      code: "",
     },
   });
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {};
+  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
+    login(
+      { email: data.email, password: data.password },
+      {
+        onError: (error: any) => {
+          toast({
+            title: "Error",
+            description: error,
+            variant: "destructive",
+          });
+
+          if (
+            error.response?.status === 500 ||
+            error.response?.status === 401 ||
+            error.response?.status === 400
+          ) {
+            toast({
+              title: "Error",
+              description: error.response?.data.error,
+              variant: "destructive",
+            });
+          }
+        },
+        onSuccess: ({ success }: { success: string }) => {
+          toast({
+            title: "Success",
+            description: success,
+            variant: "success",
+          });
+          router.push("/home");
+          router.refresh();
+        },
+      }
+    );
+  };
   return (
     <CardWrapper
       headerLabel="Welcome back"
@@ -45,7 +98,7 @@ export default function LoginForm() {
                   <FormControl>
                     <Input
                       {...field}
-                      // disabled={isPending}
+                      disabled={isPending}
                       placeholder="john.doe@example.com"
                       type="email"
                     />
@@ -65,7 +118,7 @@ export default function LoginForm() {
                       {...field}
                       placeholder="******"
                       type="password"
-                      // disabled={isPending}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
@@ -83,7 +136,7 @@ export default function LoginForm() {
           </div>
           {/* <FormError message={error || urlError} />
         <FormSuccess message={success} /> */}
-          <Button type="submit" className="w-full">
+          <Button disabled={isPending} type="submit" className="w-full">
             Login
           </Button>
         </form>

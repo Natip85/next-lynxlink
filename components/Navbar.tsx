@@ -10,11 +10,8 @@ import { currentUser } from "@/lib/auth";
 import UserAccountNav from "./auth/UserAccountNav";
 import LoginButton from "./auth/LoginButton";
 
-type Props = {};
-
-export default async function Navbar({}: Props) {
+export default async function Navbar() {
   const user = await currentUser();
-  console.log("NAVBARUSER>>", user);
 
   return (
     <div className="bg-white sticky z-50 top-0 inset-x-0 h-16">
@@ -37,7 +34,7 @@ export default async function Navbar({}: Props) {
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {user ? null : (
-                    <LoginButton asChild mode="modal">
+                    <LoginButton asChild>
                       <Button variant={"ghost"}> Sign in</Button>
                     </LoginButton>
                   )}

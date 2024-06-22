@@ -26,7 +26,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
-import { User } from "@prisma/client";
 
 type Inputs = z.infer<typeof RegisterSchema>;
 
@@ -123,7 +122,6 @@ export default function RegisterForm() {
     setValue("businessLocation", country);
   }, [goingToSell, country]);
   const processForm: SubmitHandler<Inputs> = (data) => {
-    // console.log("DATA>>>", data);
     registerUser(data, {
       onError: (error) => {
         // setShowLoader(false);
@@ -138,7 +136,6 @@ export default function RegisterForm() {
         }
       },
       onSuccess: ({ message }: { message: string }) => {
-        console.log(message);
         setPieces(200);
         setTimeout(() => {
           setPieces(0);

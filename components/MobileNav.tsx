@@ -48,9 +48,8 @@ export const PRODUCT_CATEGORIES = [
     ],
   },
 ];
-type Props = {};
 
-export default function MobileNav({}: Props) {
+export default function MobileNav() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const pathname = usePathname();

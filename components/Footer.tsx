@@ -1,15 +1,16 @@
 "use client";
 import { usePathname } from "next/navigation";
-import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import Image from "next/image";
 
-type Props = {};
-
-export default function Footer({}: Props) {
+export default function Footer() {
   const pathname = usePathname();
-  if (pathname === "/auth/register" || pathname === "/auth/new-verification")
+  if (
+    pathname === "/auth/register" ||
+    pathname === "/auth/new-verification" ||
+    pathname === "/auth/login"
+  )
     return;
   const pathsToMinimize = ["/verify-email", "/sign-up", "/sign-in"];
   return (

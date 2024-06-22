@@ -1,14 +1,22 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth, { DefaultSession } from "next-auth";
-import Google from "next-auth/providers/google";
+import NextAuth from "next-auth";
 import db from "./db/db";
-import { getUserByEmail, getUserById } from "./lib/auth";
+import { getUserById } from "./lib/auth";
 import { UserRole } from "@prisma/client";
-import Credentials from "next-auth/providers/credentials";
-import { LoginSchema, RegisterSchema } from "./validations";
-import bcryptjs from "bcryptjs";
+import authConfig from "./auth.config";
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
+export const {
+  auth,
+  handlers: { GET, POST },
+  signIn,
+  signOut,
+} = NextAuth({
+  ...authConfig,
+
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
   events: {
     async linkAccount({ user }) {
       await db.user.update({
@@ -30,8 +38,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return true;
     },
     async session({ token, session }) {
-      console.log("TOKEN>>", token);
-      console.log("SESSION>>>", session);
       if (token.sub && session.user) {
         session.user.id = token.sub;
         session.user.emailVerified = token.emailVerified as Date | null;
@@ -47,8 +53,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
     async jwt({ token }) {
-      console.log("THETOKEN>>>", token);
-
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;
@@ -60,27 +64,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return token;
     },
   },
+
   adapter: PrismaAdapter(db),
-  providers: [
-    Google,
-    Credentials({
-      async authorize(credentials) {
-        const validatedFields = LoginSchema.safeParse(credentials);
-        if (validatedFields.success) {
-          const { email, password } = validatedFields.data;
-          const user = await getUserByEmail(email);
-          if (!user || !user.password) return null;
-
-          const passwordsMatch = await bcryptjs.compare(
-            password,
-            user.password
-          );
-          if (passwordsMatch) return user;
-        }
-        return null;
-      },
-    }),
-  ],
-
   session: { strategy: "jwt" },
 });

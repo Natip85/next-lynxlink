@@ -184,7 +184,7 @@ export default function RegisterForm() {
   return (
     <MaxWidthWrapper className="m-5 md:min-h-[88vh] md:max-h-[88vh]">
       <CardWrapper headerLabel="" backButtonHref="" backButtonLabel="">
-        <section className="bg-white flex flex-col justify-between overflow-hidden ">
+        <section className="bg-background flex flex-col justify-between overflow-hidden ">
           {/* steps */}
           <nav aria-label="Progress">
             <ul
@@ -211,7 +211,7 @@ export default function RegisterForm() {
                       <span className="text-sm font-medium">{step.name}</span>
                     </div>
                   ) : (
-                    <div className="group flex w-full flex-col border-l-4 border-gray-200 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
+                    <div className="group flex w-full flex-col border-l-4 border-secondary py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
                       <span className="text-sm font-medium text-gray-500 transition-colors">
                         {step.id}
                       </span>
@@ -231,11 +231,11 @@ export default function RegisterForm() {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
-                <h2 className="text-2xl  font-semibold leading-7 text-gray-900">
+                <h2 className="text-2xl  font-semibold leading-7 ">
                   {STEPS[0].header}
                 </h2>
 
-                <p className="mt-1 text-sm leading-6 text-gray-600">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   We'll help you get set up based on your business needs.
                 </p>
                 <div>
@@ -280,11 +280,11 @@ export default function RegisterForm() {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
-                <h2 className="text-2xl font-semibold leading-7 text-gray-900">
+                <h2 className="text-2xl font-semibold leading-7">
                   {STEPS[1].header}
                 </h2>
 
-                <p className="mt-1 text-sm leading-6 text-gray-600">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   Pick what you want to start with. We'll help you stock your
                   store.
                 </p>
@@ -292,7 +292,7 @@ export default function RegisterForm() {
                   {PRODUCTS_TO_SELL.map((item, index) => (
                     <div
                       key={index}
-                      className="flex gap-2 items-center mt-5 border py-5 pr-8 pl-3 rounded-md hover:bg-gray-50"
+                      className="flex gap-2 items-center mt-5 border py-5 pr-8 pl-3 rounded-md hover:bg-secondary"
                     >
                       <Checkbox
                         id={`productsToSell-${index}.id`}
@@ -322,10 +322,10 @@ export default function RegisterForm() {
 
             {currentStep === 2 && (
               <>
-                <h2 className="text-2xl  font-semibold leading-7 text-gray-900">
+                <h2 className="text-2xl  font-semibold leading-7">
                   {STEPS[2].header}
                 </h2>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   We'll use your location to set up your default shipping rates,
                   recommended apps, and more.
                 </p>
@@ -359,16 +359,16 @@ export default function RegisterForm() {
             )}
             {currentStep === 3 && (
               <>
-                <h2 className="text-2xl font-semibold leading-7 text-gray-900">
+                <h2 className="text-2xl font-semibold leading-7">
                   {STEPS[3].header}
                 </h2>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   Last step before starting your free trial.
                 </p>
                 <div className="sm:col-span-3">
                   <Label
                     htmlFor="lastName"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6"
                   >
                     Name
                   </Label>
@@ -378,7 +378,7 @@ export default function RegisterForm() {
                       id="lastName"
                       {...register("name")}
                       autoComplete="family-name"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
                     />
                     {errors.name?.message && (
                       <p className="mt-2 text-sm text-red-400">
@@ -391,7 +391,7 @@ export default function RegisterForm() {
                 <div className="sm:col-span-4">
                   <Label
                     htmlFor="email"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6 "
                   >
                     Email
                   </Label>
@@ -401,7 +401,7 @@ export default function RegisterForm() {
                       type="email"
                       {...register("email")}
                       autoComplete="email"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
                     />
                     {errors.email?.message && (
                       <p className="mt-2 text-sm text-red-400">
@@ -413,7 +413,7 @@ export default function RegisterForm() {
                 <div className="sm:col-span-4">
                   <Label
                     htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6"
                   >
                     Password
                   </Label>
@@ -423,7 +423,7 @@ export default function RegisterForm() {
                       type="password"
                       {...register("password")}
                       autoComplete="password"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
                     />
                     {errors.password?.message && (
                       <p className="mt-2 text-sm text-red-400">
@@ -452,7 +452,7 @@ export default function RegisterForm() {
               type="button"
               onClick={prev}
               disabled={currentStep === 0}
-              className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded bg-background px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -473,7 +473,7 @@ export default function RegisterForm() {
               type="button"
               onClick={next}
               disabled={currentStep === STEPS.length - 1}
-              className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded bg-background px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

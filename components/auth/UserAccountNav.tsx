@@ -25,16 +25,16 @@ export default function UserAccountNav({ user }: UserAccountNavProps) {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="bg-white" align="end">
+      <DropdownMenuContent className="bg-background" align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex items-center justify-between gap-3 leading-none">
             <Avatar className="size-6">
               <AvatarImage src={user.image || ""} alt="user-img" />
-              <AvatarFallback>
+              <AvatarFallback className="p-1">
                 <User2 />
               </AvatarFallback>
             </Avatar>
-            <p className="font-medium text-sm text-black">{user.email}</p>
+            <p className="font-medium text-sm">{user.email}</p>
           </div>
         </div>
 
@@ -45,6 +45,7 @@ export default function UserAccountNav({ user }: UserAccountNavProps) {
         </DropdownMenuItem>
 
         <DropdownMenuItem
+          variant="destructive"
           onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
           className="cursor-pointer"
         >

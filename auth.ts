@@ -19,6 +19,8 @@ export const {
   },
   events: {
     async linkAccount({ user }) {
+      console.log("linkaccuser>>>", user);
+
       await db.user.update({
         where: {
           id: user.id,
@@ -29,6 +31,9 @@ export const {
   },
   callbacks: {
     async signIn({ user, account }) {
+      console.log("siginuser>>>", user);
+      console.log("signinaccount>>>", account);
+
       //allow oauth without email verif
       if (account?.provider !== "credentials") return true;
       const existingUser = await getUserById(user.id);
@@ -38,6 +43,9 @@ export const {
       return true;
     },
     async session({ token, session }) {
+      console.log("SESSIONTOKEN>>>", token);
+      console.log("SESSION>>>", session);
+
       if (token.sub && session.user) {
         session.user.id = token.sub;
         session.user.emailVerified = token.emailVerified as Date | null;
@@ -53,6 +61,8 @@ export const {
       return session;
     },
     async jwt({ token }) {
+      console.log("jwtTOKEN>>>", token);
+
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;

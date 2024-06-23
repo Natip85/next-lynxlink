@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import QueryProvider from "@/components/QueryProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,13 +34,20 @@ export default async function RootLayout({
             )}
             suppressHydrationWarning
           >
-            <main className="relative flex flex-col min-h-screen">
-              <Navbar />
-              <div className="flex-grow flex-1">
-                {children} <Toaster />
-              </div>
-              <Footer />
-            </main>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <main className="relative flex flex-col min-h-screen">
+                {/* <Navbar /> */}
+                <div className="flex-grow flex-1">
+                  {children} <Toaster />
+                </div>
+                <Footer />
+              </main>
+            </ThemeProvider>
           </body>
         </html>
       </SessionProvider>

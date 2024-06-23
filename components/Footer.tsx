@@ -9,14 +9,15 @@ export default function Footer() {
   if (
     pathname === "/auth/register" ||
     pathname === "/auth/new-verification" ||
-    pathname === "/auth/login"
+    pathname === "/auth/login" ||
+    pathname === "/admin"
   )
     return;
   const pathsToMinimize = ["/verify-email", "/sign-up", "/sign-in"];
   return (
-    <footer className="bg-white flex-grow-0">
+    <footer className="flex-grow-0">
       <MaxWidthWrapper>
-        <div className="border-t border-gray-200">
+        <div className="border-t border-primary">
           {pathsToMinimize.includes(pathname) ? null : (
             <div className="pb-8 pt-16">
               <div className="flex justify-center">
@@ -28,15 +29,15 @@ export default function Footer() {
           {pathsToMinimize.includes(pathname) ? null : (
             <div>
               <div className="relative flex items-center px-6 py-6 sm:py-8 lg:mt-0">
-                <div className="absolute inset-0 overflow-hidden rounded-lg">
+                <div className="absolute inset-0 overflow-hidden rounded-lg bg-primary">
                   <div
                     aria-hidden="true"
-                    className="absolute bg-zinc-50 inset-0 bg-gradient-to-br bg-opacity-90"
+                    className="absolute  inset-0 bg-gradient-to-br bg-opacity-90"
                   />
                 </div>
 
                 <div className="text-center relative mx-auto max-w-sm">
-                  <h3 className="font-semibold text-gray-900">
+                  <h3 className="font-semibold text-secondary">
                     Become a seller
                   </h3>
                   <p className="mt-2 text-sm text-muted-foreground">
@@ -44,7 +45,7 @@ export default function Footer() {
                     you can do so in minutes.{" "}
                     <Link
                       href="/auth/register"
-                      className="whitespace-nowrap font-medium text-black hover:text-zinc-900"
+                      className="whitespace-nowrap font-medium text-secondary hover:text-secondary/80"
                     >
                       Get started &rarr;
                     </Link>

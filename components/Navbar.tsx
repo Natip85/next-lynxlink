@@ -9,15 +9,18 @@ import Image from "next/image";
 import { currentUser } from "@/lib/auth";
 import UserAccountNav from "./auth/UserAccountNav";
 import LoginButton from "./auth/LoginButton";
+import { UserRole } from "@prisma/client";
+import { ModeToggle } from "./theme-toggle";
 
 export default async function Navbar() {
   const user = await currentUser();
+  console.log("NAVBARUSER", user);
 
   return (
-    <div className="bg-white sticky z-50 top-0 inset-x-0 h-16">
-      <header className="relative bg-white">
+    <div className="bg-background sticky z-50 top-0 inset-x-0 h-16">
+      <header className="relative">
         <MaxWidthWrapper>
-          <div className="border-b border-gray-200">
+          <div className="border-b border-secondary">
             <div className="flex h-16 items-center">
               <MobileNav />
 
@@ -42,7 +45,17 @@ export default async function Navbar() {
                     <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                   )}
                   {user ? (
-                    <UserAccountNav user={user} />
+                    <>
+                      {user.role === UserRole.ADMIN && (
+                        <Link
+                          href={"/admin"}
+                          className={buttonVariants({ variant: "outline" })}
+                        >
+                          Go to admin
+                        </Link>
+                      )}
+                      <UserAccountNav user={user} />
+                    </>
                   ) : (
                     <Link
                       href="/auth/register"
@@ -66,6 +79,9 @@ export default async function Navbar() {
                   )}
                   <div className="ml-4 flow-root lg:ml-6">
                     <Cart />
+                  </div>
+                  <div>
+                    <ModeToggle />
                   </div>
                 </div>
               </div>

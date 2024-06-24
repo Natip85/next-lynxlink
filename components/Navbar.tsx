@@ -10,11 +10,17 @@ import { currentUser } from "@/lib/auth";
 import UserAccountNav from "./auth/UserAccountNav";
 import LoginButton from "./auth/LoginButton";
 import { UserRole } from "@prisma/client";
-import { ModeToggle } from "./theme-toggle";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
+import NavbarModeToggle from "./NavbarModeToggle";
 
 export default async function Navbar() {
   const user = await currentUser();
-  console.log("NAVBARUSER", user);
 
   return (
     <div className="bg-background sticky z-50 top-0 inset-x-0 h-16">
@@ -81,7 +87,7 @@ export default async function Navbar() {
                     <Cart />
                   </div>
                   <div>
-                    <ModeToggle />
+                    <NavbarModeToggle />
                   </div>
                 </div>
               </div>

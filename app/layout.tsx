@@ -26,28 +26,27 @@ export default async function RootLayout({
   return (
     <QueryProvider>
       <SessionProvider session={session}>
-        <html lang="en" className="w-full">
+        <html lang="en" suppressHydrationWarning>
           <body
             className={cn(
               "relative h-full font-sans antialiased",
               inter.className
             )}
-            suppressHydrationWarning
           >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <main className="relative flex flex-col min-h-screen">
+            <main className="relative flex flex-col min-h-screen">
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
                 {/* <Navbar /> */}
                 <div className="flex-grow flex-1">
                   {children} <Toaster />
                 </div>
                 <Footer />
-              </main>
-            </ThemeProvider>
+              </ThemeProvider>
+            </main>
           </body>
         </html>
       </SessionProvider>

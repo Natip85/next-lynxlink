@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import db from "@/db/db";
+import { useTheme } from "next-themes";
 
 export const currentUser = async () => {
   const session = await auth();

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Image from "next/image";
-import { ModeToggle } from "./theme-toggle";
 
 export default function AdminNavbar() {
   return (
@@ -10,9 +9,6 @@ export default function AdminNavbar() {
         <MaxWidthWrapper>
           <div className="flex h-16 items-center">
             <div>fdfdfgd</div>
-            <div>
-              <ModeToggle />
-            </div>
           </div>
         </MaxWidthWrapper>
       </header>

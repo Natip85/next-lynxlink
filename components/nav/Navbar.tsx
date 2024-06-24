@@ -1,23 +1,16 @@
 import React from "react";
-import MaxWidthWrapper from "./MaxWidthWrapper";
+import MaxWidthWrapper from "../MaxWidthWrapper";
 import Link from "next/link";
-import { Button, buttonVariants } from "./ui/button";
-import Cart from "./Cart";
+import { Button, buttonVariants } from "../ui/button";
+import Cart from "../Cart";
 import MobileNav from "./MobileNav";
 import NavItems from "./NavItems";
 import Image from "next/image";
 import { currentUser } from "@/lib/auth";
-import UserAccountNav from "./auth/UserAccountNav";
-import LoginButton from "./auth/LoginButton";
+import UserAccountNav from "../auth/UserAccountNav";
+import LoginButton from "../auth/LoginButton";
 import { UserRole } from "@prisma/client";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
-import NavbarModeToggle from "./NavbarModeToggle";
+import NavbarModeToggle from "../NavbarModeToggle";
 
 export default async function Navbar() {
   const user = await currentUser();
@@ -32,7 +25,13 @@ export default async function Navbar() {
 
               <div className="ml-4 flex lg:ml-0">
                 <Link href="/">
-                  <Image src={"/logo.png"} alt="logo" width={60} height={60} />
+                  <Image
+                    src={"/logo.png"}
+                    alt="logo"
+                    width={60}
+                    height={60}
+                    priority
+                  />
                 </Link>
               </div>
 
@@ -40,7 +39,7 @@ export default async function Navbar() {
                 <NavItems />
               </div>
 
-              <div className="ml-auto flex items-center">
+              <div className="ml-auto flex items-center gap-3">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {user ? null : (
                     <LoginButton asChild>
@@ -51,17 +50,7 @@ export default async function Navbar() {
                     <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                   )}
                   {user ? (
-                    <>
-                      {user.role === UserRole.ADMIN && (
-                        <Link
-                          href={"/admin"}
-                          className={buttonVariants({ variant: "outline" })}
-                        >
-                          Go to admin
-                        </Link>
-                      )}
-                      <UserAccountNav user={user} />
-                    </>
+                    <UserAccountNav user={user} />
                   ) : (
                     <Link
                       href="/auth/register"
@@ -86,9 +75,17 @@ export default async function Navbar() {
                   <div className="ml-4 flow-root lg:ml-6">
                     <Cart />
                   </div>
-                  <div>
-                    <NavbarModeToggle />
-                  </div>
+                </div>
+                {user?.role === UserRole.ADMIN && (
+                  <Link
+                    href={"/admin"}
+                    className={buttonVariants({ variant: "outline" })}
+                  >
+                    Go to admin
+                  </Link>
+                )}
+                <div>
+                  <NavbarModeToggle />
                 </div>
               </div>
             </div>

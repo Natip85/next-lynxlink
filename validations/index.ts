@@ -27,3 +27,16 @@ export const RegisterSchema = z.object({
 // export const NewPasswordSchema = z.object({
 //   password: z.string().min(6, { message: "Minimum of 6 characters required" }),
 // });
+
+export const addProductSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: "Name must be at least 3 characters long" }),
+  description: z
+    .string()
+    .min(10, { message: "Description must be at least 10 characters long" }),
+  priceInCents: z.coerce
+    .number()
+    .int()
+    .min(1, { message: "Price must be at least 1 cent" }),
+});

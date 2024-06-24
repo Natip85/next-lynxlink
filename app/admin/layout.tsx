@@ -1,5 +1,8 @@
-import AdminNavbar from "@/components/AdminNavbar";
-import Sidebar from "@/components/Sidebar";
+import Header from "@/components/nav/Header";
+import HeaderMobile from "@/components/nav/HeaderMobile";
+import MarginWidthWrapper from "@/components/MarginWidthWrapper";
+import PageWrapper from "@/components/PageWrapper";
+import SideNav from "@/components/nav/SideNav";
 
 export default function AdminLayout({
   children,
@@ -7,14 +10,17 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex">
-      <Sidebar />
-      <main className="flex flex-col flex-1">
-        <AdminNavbar />
-        <section className="flex min-h-screen flex-1 flex-col items-center px-1 pb-10 pt-28 max-md:pb-32 sm:px-10">
-          <div className="w-full max-w-6xl">{children}</div>
-        </section>
-      </main>
+    <div>
+      <div className="flex">
+        <SideNav />
+        <main className="flex-1">
+          <MarginWidthWrapper>
+            <Header />
+            <HeaderMobile />
+            <PageWrapper>{children}</PageWrapper>
+          </MarginWidthWrapper>
+        </main>
+      </div>
     </div>
   );
 }

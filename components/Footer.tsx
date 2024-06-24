@@ -6,11 +6,13 @@ import Image from "next/image";
 
 export default function Footer() {
   const pathname = usePathname();
+  const hideFooter = pathname.startsWith("/admin");
+
   if (
     pathname === "/auth/register" ||
     pathname === "/auth/new-verification" ||
     pathname === "/auth/login" ||
-    pathname === "/admin"
+    hideFooter
   )
     return;
   const pathsToMinimize = ["/verify-email", "/sign-up", "/sign-in"];
@@ -21,7 +23,13 @@ export default function Footer() {
           {pathsToMinimize.includes(pathname) ? null : (
             <div className="pb-8 pt-16">
               <div className="flex justify-center">
-                <Image src={"/logo.png"} alt="logo" width={100} height={100} />
+                <Image
+                  src={"/logo.png"}
+                  alt="logo"
+                  width={100}
+                  height={100}
+                  priority
+                />
               </div>
             </div>
           )}

@@ -1,5 +1,5 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/nav/Navbar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowDownToLine, CheckCircle, Leaf } from "lucide-react";
 import Link from "next/link";

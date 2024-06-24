@@ -9,10 +9,10 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { ExtendedUser } from "@/next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { User2 } from "lucide-react";
+import SignOutButton from "./SignOutButton";
 interface UserAccountNavProps {
   user: ExtendedUser;
 }
@@ -43,14 +43,7 @@ export default function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuItem asChild>
           <Link href="/sell">Seller Dashboard</Link>
         </DropdownMenuItem>
-
-        <DropdownMenuItem
-          variant="destructive"
-          onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
-          className="cursor-pointer"
-        >
-          Log out
-        </DropdownMenuItem>
+        <SignOutButton>Log out</SignOutButton>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -49,6 +49,8 @@ export default function AddProductForm({
     product?.priceInCents
   );
   console.log("testttttttt");
+  console.log("testttttghgfikykutt");
+  console.log("testttttghgfikykutt");
 
   const { mutate: createProduct, isPending } = useMutation({
     mutationFn: async ({

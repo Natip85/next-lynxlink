@@ -22,6 +22,8 @@ export default function Cart() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  console.log("dsfdffdf");
+
   return (
     <Sheet>
       <SheetTrigger className="group -m-2 flex items-center p-2">

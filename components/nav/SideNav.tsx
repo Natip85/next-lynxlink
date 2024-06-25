@@ -88,8 +88,8 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
             }`}
           >
             <div className="flex flex-row space-x-4 items-center">
-              {item.icon}
-              <span className="font-semibold text-xl  flex">
+              {item.icon && item.icon({ className: "size-4" })}
+              <span className="font-medium flex">
                 <Link href={item.path}>{item.title}</Link>
               </span>
             </div>
@@ -120,12 +120,12 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
       ) : (
         <Link
           href={item.path}
-          className={`flex flex-row space-x-4 items-center p-2 rounded-lg hover:bg-secondary ${
-            item.path === pathname ? "bg-secondary" : ""
+          className={`flex  flex-row space-x-4 items-center p-2 rounded-lg hover:bg-secondary ${
+            item.path === pathname ? "bg-secondary font-bold" : ""
           }`}
         >
-          {item.icon}
-          <span className="font-semibold text-xl flex">{item.title}</span>
+          {item.icon && item.icon({ className: "size-4" })}
+          <span className="font-medium text-sm flex">{item.title}</span>
         </Link>
       )}
     </div>

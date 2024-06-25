@@ -24,6 +24,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useToast } from "../ui/use-toast";
 import LoadingCreateProduct from "./LoadingCreateProduct";
+import { useRouter } from "next/navigation";
 type ImageType = {
   key: string;
   name: string;
@@ -40,6 +41,7 @@ export default function AddProductForm({
 }: {
   product?: Product | null;
 }) {
+  const router = useRouter();
   const { toast } = useToast();
   const [showLoader, setShowLoader] = useState(false);
   const [finishedLoading, setFinishedLoading] = useState(false);
@@ -56,7 +58,7 @@ export default function AddProductForm({
       priceInCents,
       images,
     }: z.infer<typeof addProductSchema>) => {
-      const response = await axios.post("/api/game", {
+      const response = await axios.post("/api/product", {
         name,
         description,
         priceInCents,
@@ -71,7 +73,7 @@ export default function AddProductForm({
     defaultValues: {
       name: "",
       description: "",
-      priceInCents: undefined,
+      priceInCents: 0,
       images: undefined,
     },
   });
@@ -86,13 +88,20 @@ export default function AddProductForm({
           variant: "destructive",
         });
       },
-      onSuccess: ({ message }: { message: string }) => {
+      onSuccess: ({
+        product,
+        message,
+      }: {
+        product: Product;
+        message: string;
+      }) => {
         setFinishedLoading(true);
         toast({
           title: "Success",
           description: message,
           variant: "success",
         });
+        router.push(`/admin/products/${product.id}/edit`);
       },
     });
   };
@@ -113,9 +122,10 @@ export default function AddProductForm({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product name</FormLabel>
+                  <FormLabel htmlFor="name">Product name</FormLabel>
                   <FormControl>
                     <Input
+                      id="name"
                       placeholder="Enter a product name..."
                       value={productName}
                       onChange={(e) => {
@@ -138,9 +148,12 @@ export default function AddProductForm({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product description</FormLabel>
+                  <FormLabel htmlFor="description">
+                    Product description
+                  </FormLabel>
                   <FormControl>
                     <Input
+                      id="description"
                       placeholder="Enter a product description..."
                       {...field}
                     />
@@ -158,7 +171,7 @@ export default function AddProductForm({
               name="images"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center justify-between">
+                  <div className="flex items-center justify-between">
                     Product images
                     {imageData && imageData.length > 0 && (
                       <Button
@@ -174,7 +187,7 @@ export default function AddProductForm({
                         <Minus /> Remove images
                       </Button>
                     )}
-                  </FormLabel>
+                  </div>
                   <FormControl>
                     <>
                       {imageData && imageData.length > 0 ? (
@@ -223,9 +236,12 @@ export default function AddProductForm({
               name="priceInCents"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product price (in cents)</FormLabel>
+                  <FormLabel htmlFor="price">
+                    Product price (in cents)
+                  </FormLabel>
                   <FormControl>
                     <Input
+                      id="price"
                       type="number"
                       placeholder="Enter the product price in cents"
                       value={priceInCents}
@@ -252,7 +268,7 @@ export default function AddProductForm({
         </div>
         <div className="mx-auto max-w-5xl p-5 flex items-center justify-end">
           <Button disabled={isPending} type="submit">
-            {isPending ? "Creating product" : "Create"}
+            {isPending ? "Creating product..." : "Create product"}
           </Button>
         </div>
       </form>

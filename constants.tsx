@@ -3,7 +3,7 @@ import { Home, Store, Workflow } from "lucide-react";
 export type SideNavItem = {
   title: string;
   path: string;
-  icon?: JSX.Element;
+  icon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
   submenu?: boolean;
   submenuItems?: SideNavItem[];
 };
@@ -12,12 +12,12 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: "Admin",
     path: "/admin",
-    icon: <Home />,
+    icon: (props) => <Home {...props} />,
   },
   {
     title: "Products",
     path: "/admin/products",
-    icon: <Workflow />,
+    icon: (props) => <Workflow {...props} />,
     submenu: true,
     submenuItems: [
       { title: "Add product", path: "/admin/products/new" },
@@ -28,6 +28,6 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   {
     title: "Live store",
     path: "/",
-    icon: <Store />,
+    icon: (props) => <Store {...props} />,
   },
 ];

@@ -3,7 +3,7 @@ import HeaderMobile from "@/components/nav/HeaderMobile";
 import MarginWidthWrapper from "@/components/MarginWidthWrapper";
 import PageWrapper from "@/components/PageWrapper";
 import SideNav from "@/components/nav/SideNav";
-
+export const dynamic = "force-dynamic";
 export default function AdminLayout({
   children,
 }: Readonly<{

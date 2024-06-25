@@ -21,11 +21,11 @@ import { UploadDropzone } from "../uploadthing";
 import Image from "next/image";
 import { Minus } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useToast } from "../ui/use-toast";
 import LoadingCreateProduct from "./LoadingCreateProduct";
 import { useRouter } from "next/navigation";
-type ImageType = {
+export type ImageType = {
   key: string;
   name: string;
   url: string;
@@ -50,6 +50,7 @@ export default function AddProductForm({
   const [priceInCents, setPriceInCents] = useState<number | undefined>(
     product?.priceInCents
   );
+  const [isImageLoading, setIsImageLoading] = useState(false);
 
   const { mutate: createProduct, isPending } = useMutation({
     mutationFn: async ({
@@ -102,6 +103,7 @@ export default function AddProductForm({
           variant: "success",
         });
         router.push(`/admin/products/${product.id}/edit`);
+        router.refresh();
       },
     });
   };
@@ -214,9 +216,13 @@ export default function AddProductForm({
                           onClientUploadComplete={(url: any) => {
                             setImageData(url);
                             field.onChange(url);
+                            setIsImageLoading(false);
                           }}
                           onUploadError={(error) => {
                             window.alert(`${error?.message}`);
+                          }}
+                          onUploadProgress={() => {
+                            setIsImageLoading(true);
                           }}
                         />
                       )}
@@ -267,7 +273,7 @@ export default function AddProductForm({
           <div className="md:w-1/3 md:max-w-80">second section</div>
         </div>
         <div className="mx-auto max-w-5xl p-5 flex items-center justify-end">
-          <Button disabled={isPending} type="submit">
+          <Button disabled={isPending || isImageLoading} type="submit">
             {isPending ? "Creating product..." : "Create product"}
           </Button>
         </div>

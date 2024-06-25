@@ -5,10 +5,22 @@ export async function PATCH(req: Request, res: Response) {
   try {
     const body = await req.json();
     const { id, isAvailableForPurchase } = body;
-    await db.product.update({
+    const active = await db.product.update({
       where: { id },
       data: { isAvailableForPurchase },
     });
-    return NextResponse.json({ message: "Product created." }, { status: 200 });
-  } catch (error) {}
+    return NextResponse.json(
+      { isAvailable: active.isAvailableForPurchase },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log("ERROR>>>", error);
+
+    return NextResponse.json(
+      { error: "An unexpected error occurred!" },
+      {
+        status: 500,
+      }
+    );
+  }
 }

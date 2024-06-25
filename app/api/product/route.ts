@@ -17,10 +17,6 @@ export async function POST(req: Request, res: Response) {
     const body = await req.json();
     const { name, description, images, priceInCents } =
       addProductSchema.parse(body);
-    console.log("BENAME", name);
-    console.log("BEDESC", description);
-    console.log("BEIMGS", images);
-    console.log("BEPRICE", priceInCents);
 
     const product = await db.product.create({
       data: {

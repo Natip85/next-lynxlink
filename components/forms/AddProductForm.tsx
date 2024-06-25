@@ -50,7 +50,6 @@ export default function AddProductForm({
   );
   console.log("testttttttt");
   console.log("testttttghgfikykutt");
-  console.log("testttttghgfikykutt");
 
   const { mutate: createProduct, isPending } = useMutation({
     mutationFn: async ({

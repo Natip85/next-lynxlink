@@ -39,4 +39,17 @@ export const addProductSchema = z.object({
     .number()
     .int()
     .min(1, { message: "Price must be at least 1 cent" }),
+  images: z
+    .array(
+      z.object({
+        key: z.string(),
+        name: z.string(),
+        url: z.string(),
+        size: z.number(),
+        serverData: z.object({
+          uploadedBy: z.string(),
+        }),
+      })
+    )
+    .nonempty(),
 });

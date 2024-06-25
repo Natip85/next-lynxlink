@@ -48,7 +48,7 @@ export default function AddProductForm({
   const [priceInCents, setPriceInCents] = useState<number | undefined>(
     product?.priceInCents
   );
-  console.log("testttttttttttttt");
+  console.log("testttttttt");
 
   const { mutate: createProduct, isPending } = useMutation({
     mutationFn: async ({

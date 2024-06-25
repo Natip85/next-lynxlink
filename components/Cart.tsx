@@ -22,7 +22,6 @@ export default function Cart() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  console.log("dsfdffdf");
 
   return (
     <Sheet>

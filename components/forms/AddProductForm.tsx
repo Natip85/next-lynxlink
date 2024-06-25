@@ -48,8 +48,6 @@ export default function AddProductForm({
   const [priceInCents, setPriceInCents] = useState<number | undefined>(
     product?.priceInCents
   );
-  console.log("testttttttt");
-  console.log("testttttghgfikykutt");
 
   const { mutate: createProduct, isPending } = useMutation({
     mutationFn: async ({
@@ -78,7 +76,6 @@ export default function AddProductForm({
     },
   });
   const onSubmit = async (data: z.infer<typeof addProductSchema>) => {
-    console.log("addprdData>>>", data);
     setShowLoader(true);
     createProduct(data, {
       onError: (error) => {
@@ -100,7 +97,6 @@ export default function AddProductForm({
     });
   };
   form.watch();
-  console.log(form.watch());
   if (showLoader) {
     return <LoadingCreateProduct finished={finishedLoading} />;
   }
@@ -203,8 +199,6 @@ export default function AddProductForm({
                           className="border-primary"
                           endpoint={"imageUploader"}
                           onClientUploadComplete={(url: any) => {
-                            console.log("URLDATA>>>", url);
-
                             setImageData(url);
                             field.onChange(url);
                           }}

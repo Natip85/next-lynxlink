@@ -14,7 +14,6 @@ const loadingTexts = [
 export default function LoadingCreateProduct({ finished }: Props) {
   const [progress, setProgress] = useState(10);
   const [loadingText, setLoadingText] = useState(loadingTexts[0]);
-  console.log("fdfgfgfg");
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -91,6 +91,7 @@ model Product {
   priceInCents            Int
   images                  Json[]
   isAvailableForPurchase  Boolean     @default(true)
+  color                   String?
   createdAt               DateTime    @default(now())
   updatedAt               DateTime    @updatedAt
 

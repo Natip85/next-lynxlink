@@ -42,7 +42,12 @@ export default async function Home() {
             <Link href="/products" className={buttonVariants()}>
               Browse Trending
             </Link>
-            <Button variant="ghost">Our quality promise &rarr;</Button>
+            <Link
+              href={"/products"}
+              className={buttonVariants({ variant: "ghost" })}
+            >
+              Our quality promise &rarr;
+            </Link>
           </div>
         </div>
       </MaxWidthWrapper>

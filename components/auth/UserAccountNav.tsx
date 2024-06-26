@@ -14,9 +14,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { User2 } from "lucide-react";
 import SignOutButton from "./SignOutButton";
 interface UserAccountNavProps {
-  user: ExtendedUser;
+  user: any;
 }
 export default function UserAccountNav({ user }: UserAccountNavProps) {
+  console.log("USERACCNAV>>>", user);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="overflow-visible">

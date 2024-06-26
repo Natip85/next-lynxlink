@@ -111,6 +111,7 @@ export default function AddProductForm({
   if (showLoader) {
     return <LoadingCreateProduct finished={finishedLoading} />;
   }
+  // TODO: add loading state for img upload
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

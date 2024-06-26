@@ -29,42 +29,46 @@ export function ActiveToggleDropdownItem({
 
       return response.data;
     },
+
+    onError: (error) => {
+      console.log("TOGGLEERROR>", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong, please try again.",
+        variant: "destructive",
+      });
+      router.refresh();
+    },
+    onSuccess: ({ isAvailable }: { isAvailable: boolean }) => {
+      toast({
+        title: "Success",
+        description: `${
+          isAvailable ? "Product now active" : "Product deactived"
+        }`,
+        variant: "success",
+      });
+      router.refresh();
+    },
   });
 
   return (
     <DropdownMenuItem
       disabled={isPending}
       onClick={() => {
-        toggleProductAvailability(
-          { id, isAvailableForPurchase: !isAvailableForPurchase },
-          {
-            onError: (error) => {
-              console.log("TOGGLEERROR>", error);
-              toast({
-                title: "Error",
-                description: "Something went wrong, please try again.",
-                variant: "destructive",
-              });
-              router.refresh();
-            },
-            onSuccess: ({ isAvailable }: { isAvailable: boolean }) => {
-              toast({
-                title: "Success",
-                description: `${
-                  isAvailable ? "Product now active" : "Product deactived"
-                }`,
-                variant: "success",
-              });
-              router.refresh();
-            },
-          }
-        );
+        toggleProductAvailability({
+          id,
+          isAvailableForPurchase: !isAvailableForPurchase,
+        });
       }}
     >
       {isAvailableForPurchase ? "Deactivate" : "Activate"}
     </DropdownMenuItem>
   );
 }
+type DeleteProductParams = {
+  id: string;
+  imageKeys: string[];
+};
 export function DeleteDropdownItem({
   id,
   images,
@@ -72,61 +76,50 @@ export function DeleteDropdownItem({
   id: string;
   images: ImageType[];
 }) {
+  console.log("ID>>>", id);
   console.log("IMGS>>>", images);
 
-  if (!id) return;
   const router = useRouter();
   const { toast } = useToast();
   const { mutate: deleteProduct, isPending } = useMutation({
-    mutationFn: async ({ id }: Pick<Product, "id">) => {
+    mutationFn: async ({ id, imageKeys }: DeleteProductParams) => {
       const response = await axios.delete("/api/product/delete-product", {
-        data: { id },
+        data: { id, imageKeys },
       });
 
       return response.data;
     },
-  });
-  const { mutate: imagesDelete, isPending: isImagePending } = useMutation({
-    mutationFn: async ({ key }: ImageType) => {
-      const response = await axios.delete("/api/product/delete-product", {
-        data: { key },
-      });
 
-      return response.data;
+    onError: (error) => {
+      console.log("DELETEERROR>", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong, please try again.",
+        variant: "destructive",
+      });
+      router.refresh();
+    },
+    onSuccess: ({ message }: { message: string }) => {
+      toast({
+        title: "Success",
+        description: message,
+        variant: "success",
+      });
+      router.refresh();
     },
   });
-  // function handleImageDelete() {
-  //   console.log("clicked");
-  //   imagesDelete(images.keys)
-  // }
+
+  if (!id) return null;
+
+  const imageKeys = images.map((img) => {
+    return img.key;
+  });
   return (
     <DropdownMenuItem
       variant="destructive"
       disabled={isPending}
       onClick={() => {
-        deleteProduct(
-          { id },
-          {
-            onError: (error) => {
-              console.log("DELETEERROR>", error);
-              toast({
-                title: "Error",
-                description: "Something went wrong, please try again.",
-                variant: "destructive",
-              });
-              router.refresh();
-            },
-            onSuccess: ({ message }: { message: string }) => {
-              toast({
-                title: "Success",
-                description: message,
-                variant: "success",
-              });
-              router.refresh();
-            },
-          }
-        );
-        // handleImageDelete();
+        deleteProduct({ id, imageKeys });
       }}
     >
       Delete

@@ -48,7 +48,7 @@ export default function AddProductForm({
   const [imageData, setImageData] = useState<ImageType[] | undefined>();
   const [productName, setProductName] = useState(product?.name || "");
   const [priceInCents, setPriceInCents] = useState<number | undefined>(
-    product?.priceInCents
+    product?.priceInCents || undefined
   );
   const [isImageLoading, setIsImageLoading] = useState(false);
 
@@ -99,7 +99,7 @@ export default function AddProductForm({
       name: product?.name || "",
       description: product?.description || "",
       images: imageData || undefined,
-      priceInCents: product?.priceInCents || 1,
+      priceInCents: product?.priceInCents || 0,
     },
   });
   const onSubmit = async (data: z.infer<typeof addProductSchema>) => {

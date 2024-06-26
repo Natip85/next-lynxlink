@@ -69,12 +69,14 @@ type DeleteProductParams = {
   id: string;
   imageKeys: string[];
 };
-export function DeleteDropdownItem({
+export function DeleteProductDropdownItem({
   id,
   images,
+  disabled,
 }: {
   id: string;
   images: ImageType[];
+  disabled?: boolean;
 }) {
   const router = useRouter();
   const { toast } = useToast();
@@ -114,7 +116,7 @@ export function DeleteDropdownItem({
   return (
     <DropdownMenuItem
       variant="destructive"
-      disabled={isPending}
+      disabled={disabled || isPending}
       onClick={() => {
         deleteProduct({ id, imageKeys });
       }}

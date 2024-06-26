@@ -1,4 +1,5 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import ZoomParallax from "@/components/ZoomParallax";
 import Navbar from "@/components/nav/Navbar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowDownToLine, CheckCircle, Leaf } from "lucide-react";
@@ -23,7 +24,7 @@ const perks = [
       "Every asset on our platform is verified by aour tema to insyurace high qualuity statsndrd. Not happy? We offer a 30 day guarantee",
   },
 ];
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <Navbar />
@@ -38,13 +39,16 @@ export default function Home() {
             team to ensure our highest quality standards.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
-            <Link href="/home" className={buttonVariants()}>
+            <Link href="/products" className={buttonVariants()}>
               Browse Trending
             </Link>
             <Button variant="ghost">Our quality promise &rarr;</Button>
           </div>
         </div>
       </MaxWidthWrapper>
+      <div className="mt-[10vh] mb-[10vh]">
+        <ZoomParallax />
+      </div>
       <section className="border-t border-secondary bg-secondary">
         <MaxWidthWrapper className="py-20">
           <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">

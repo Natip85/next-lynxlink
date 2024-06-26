@@ -1,4 +1,10 @@
-import { Home, Store, Workflow } from "lucide-react";
+import {
+  BarChart3Icon,
+  Home,
+  StoreIcon,
+  TagsIcon,
+  Users2Icon,
+} from "lucide-react";
 
 export type SideNavItem = {
   title: string;
@@ -15,19 +21,28 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     icon: (props) => <Home {...props} />,
   },
   {
+    title: "Customers",
+    path: "/admin/users",
+    icon: (props) => <Users2Icon {...props} />,
+  },
+  {
     title: "Products",
     path: "/admin/products",
-    icon: (props) => <Workflow {...props} />,
+    icon: (props) => <TagsIcon {...props} />,
     submenu: true,
     submenuItems: [
       { title: "Add product", path: "/admin/products/new" },
-      { title: "All2", path: "/admin/products2" },
-      { title: "All3", path: "/admin/products3" },
+      { title: "Discount codes", path: "/admin/discount-codes" },
     ],
+  },
+  {
+    title: "Analytics",
+    path: "/admin/analytics",
+    icon: (props) => <BarChart3Icon {...props} />,
   },
   {
     title: "Live store",
     path: "/",
-    icon: (props) => <Store {...props} />,
+    icon: (props) => <StoreIcon {...props} />,
   },
 ];

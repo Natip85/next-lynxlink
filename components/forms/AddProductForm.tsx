@@ -171,6 +171,8 @@ export default function AddProductForm({
     return <LoadingCreateProduct finished={finishedLoading} />;
   }
   // TODO: add loading state for img upload
+  // TODO: delete images in uplloadthing when clearing img state
+  // TODO: create functioanlity to remove selected imgs only instead of removing all imags as is now
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

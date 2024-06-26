@@ -73,7 +73,7 @@ export default function LoginForm() {
             description: success,
             variant: "success",
           });
-          router.push("/home");
+          router.push("/products");
           router.refresh();
         },
       }

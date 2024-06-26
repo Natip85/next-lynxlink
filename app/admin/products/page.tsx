@@ -1,8 +1,9 @@
 import { ImageType } from "@/components/forms/AddProductForm";
 import {
   ActiveToggleDropdownItem,
-  DeleteDropdownItem,
+  DeleteProductDropdownItem,
 } from "@/components/products/DropdownMenuActionItems.tsx";
+import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +21,6 @@ import {
 } from "@/components/ui/table";
 import db from "@/db/db";
 import { formatNumber, formatPrice } from "@/lib/formatters";
-import { Prisma } from "@prisma/client";
 import { CheckCircle2, MoreHorizontal, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,8 +28,16 @@ import Link from "next/link";
 export default function ProductsPage() {
   return (
     <>
-      <h1 className="text-xl font-semibold md:text-4xl w-full md:max-w-4xl mx-auto my-10">
-        Products
+      <h1 className="text-xl font-semibold md:text-4xl w-full md:max-w-4xl my-10 flex items-center justify-between mx-auto">
+        <span>Products</span>
+        <span>
+          <Link
+            href={"/admin/products/new"}
+            className={buttonVariants({ size: "xs" })}
+          >
+            Add product
+          </Link>
+        </span>
       </h1>
       <ProductsTable />
     </>
@@ -105,14 +113,6 @@ async function ProductsTable() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem asChild>
-                      <a
-                        download
-                        href={`/admin/products/${product.id}/download`}
-                      >
-                        Download
-                      </a>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
                       <Link href={`/admin/products/${product.id}/edit`}>
                         Edit
                       </Link>
@@ -122,7 +122,7 @@ async function ProductsTable() {
                       isAvailableForPurchase={product.isAvailableForPurchase}
                     />
                     <DropdownMenuSeparator />
-                    <DeleteDropdownItem
+                    <DeleteProductDropdownItem
                       id={product.id}
                       images={product.images as ImageType[]}
                       // disabled={product._count.orders > 0}

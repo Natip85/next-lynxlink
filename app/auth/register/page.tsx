@@ -8,7 +8,7 @@ export const metadata = {
 export default async function RegisterPage() {
   const user = await currentUser();
   if (user) {
-    redirect("/home");
+    redirect("/products");
   }
   return <RegisterForm />;
 }

@@ -8,7 +8,7 @@ export const metadata = {
 export default async function LoginPage() {
   const user = await currentUser();
   if (user) {
-    redirect("/home");
+    redirect("/products");
   }
   return (
     <div className="h-screen flex items-center justify-center">

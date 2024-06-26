@@ -17,8 +17,6 @@ interface UserAccountNavProps {
   user: any;
 }
 export default function UserAccountNav({ user }: UserAccountNavProps) {
-  console.log("USERACCNAV>>>", user);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="overflow-visible">

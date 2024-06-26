@@ -1,8 +1,11 @@
 import db from "@/db/db";
 import { currentUser } from "@/lib/auth";
 import { addProductSchema } from "@/validations";
+import { Prisma } from "@prisma/client";
+import axios from "axios";
 import { NextResponse } from "next/server";
 import * as z from "zod";
+
 export async function POST(req: Request, res: Response) {
   try {
     const user = await currentUser();
@@ -49,5 +52,57 @@ export async function POST(req: Request, res: Response) {
         }
       );
     }
+  }
+}
+
+export async function PATCH(req: Request, res: Response) {
+  try {
+    const body = await req.json();
+    const { id, name, description, images, priceInCents } = body;
+    const product = await db.product.findUnique({ where: { id } });
+    if (!product) {
+      return NextResponse.json(
+        { error: "No such product exists." },
+        {
+          status: 400,
+        }
+      );
+    }
+    await db.product.update({
+      where: { id },
+      data: {
+        name,
+        description,
+        priceInCents,
+        images,
+      },
+    });
+    return NextResponse.json({ message: "Product updated." }, { status: 200 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: error.issues },
+        {
+          status: 400,
+        }
+      );
+    }
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data || error.message);
+      return NextResponse.json(
+        { error: "Failed to edit product due to network error" },
+        { status: 500 }
+      );
+    }
+
+    console.error("Failed to edit product:", error);
+    return NextResponse.json(
+      { error: "Failed to edit the product" },
+      { status: 500 }
+    );
   }
 }

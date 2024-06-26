@@ -15,7 +15,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { formatPrice } from "@/lib/formatters";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "@prisma/client";
 import { UploadDropzone } from "../uploadthing";
 import Image from "next/image";
@@ -46,12 +46,17 @@ export default function AddProductForm({
   const [showLoader, setShowLoader] = useState(false);
   const [finishedLoading, setFinishedLoading] = useState(false);
   const [imageData, setImageData] = useState<ImageType[] | undefined>();
-  const [productName, setProductName] = useState("");
+  const [productName, setProductName] = useState(product?.name || "");
   const [priceInCents, setPriceInCents] = useState<number | undefined>(
     product?.priceInCents
   );
   const [isImageLoading, setIsImageLoading] = useState(false);
 
+  useEffect(() => {
+    if (product?.images) {
+      setImageData(product?.images as ImageType[]);
+    }
+  }, []);
   const { mutate: createProduct, isPending } = useMutation({
     mutationFn: async ({
       name,
@@ -69,45 +74,99 @@ export default function AddProductForm({
       return response.data;
     },
   });
+  const { mutate: editProduct, isPending: editPending } = useMutation({
+    mutationFn: async ({
+      name,
+      description,
+      priceInCents,
+      images,
+      id,
+    }: z.infer<typeof addProductSchema> & { id: string }) => {
+      const response = await axios.patch("/api/product", {
+        name,
+        description,
+        priceInCents,
+        images,
+        id,
+      });
+
+      return response.data;
+    },
+  });
   const form = useForm<z.infer<typeof addProductSchema>>({
     resolver: zodResolver(addProductSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      priceInCents: 0,
-      images: undefined,
+      name: product?.name || "",
+      description: product?.description || "",
+      images: imageData || undefined,
+      priceInCents: product?.priceInCents || 1,
     },
   });
   const onSubmit = async (data: z.infer<typeof addProductSchema>) => {
-    setShowLoader(true);
-    createProduct(data, {
-      onError: (error) => {
-        setShowLoader(false);
-        toast({
-          title: "Error",
-          description: "Something went wrong, please try again.",
-          variant: "destructive",
-        });
-      },
-      onSuccess: ({
-        product,
-        message,
-      }: {
-        product: Product;
-        message: string;
-      }) => {
-        setFinishedLoading(true);
-        toast({
-          title: "Success",
-          description: message,
-          variant: "success",
-        });
-        router.push(`/admin/products/${product.id}/edit`);
-        router.refresh();
-      },
-    });
+    if (product) {
+      //EDIT
+      setShowLoader(true);
+
+      if (!product.id) return null;
+      editProduct(
+        { ...data, id: product.id },
+        {
+          onError: (error) => {
+            setShowLoader(false);
+            toast({
+              title: "Error",
+              description: "Something went wrong, please try again.",
+              variant: "destructive",
+            });
+          },
+          onSuccess: ({ message }: { message: string }) => {
+            setFinishedLoading(true);
+            setShowLoader(false);
+
+            toast({
+              title: "Success",
+              description: message,
+              variant: "success",
+            });
+            router.push(`/admin/products/${product.id}/edit`);
+            router.refresh();
+          },
+        }
+      );
+    } else {
+      //CREATE
+      setShowLoader(true);
+
+      createProduct(data, {
+        onError: (error) => {
+          setShowLoader(false);
+          toast({
+            title: "Error",
+            description: "Something went wrong, please try again.",
+            variant: "destructive",
+          });
+        },
+        onSuccess: ({
+          product,
+          message,
+        }: {
+          product: Product;
+          message: string;
+        }) => {
+          setFinishedLoading(true);
+          toast({
+            title: "Success",
+            description: message,
+            variant: "success",
+          });
+          router.push(`/admin/products/${product.id}/edit`);
+          router.refresh();
+        },
+      });
+    }
   };
   form.watch();
+
   if (showLoader) {
     return <LoadingCreateProduct finished={finishedLoading} />;
   }
@@ -182,7 +241,7 @@ export default function AddProductForm({
                         size={"sm"}
                         type="button"
                         onClick={() => {
-                          setImageData([]);
+                          setImageData(undefined);
                           form.resetField("images");
                         }}
                         className="flex items-center gap-2"
@@ -253,9 +312,8 @@ export default function AddProductForm({
                       placeholder="Enter the product price in cents"
                       value={priceInCents}
                       onChange={(e) => {
-                        const value = Number(e.target.value) || 0;
-                        setPriceInCents(value);
-                        field.onChange(value);
+                        setPriceInCents(Number(e.target.value) || undefined);
+                        field.onChange(e.target.value);
                       }}
                     />
                   </FormControl>
@@ -275,7 +333,7 @@ export default function AddProductForm({
         </div>
         <div className="mx-auto max-w-5xl p-5 flex items-center justify-end">
           <Button disabled={isPending || isImageLoading} type="submit">
-            {isPending ? "Creating product..." : "Create product"}
+            {product ? "Update product" : "Create product"}
           </Button>
         </div>
       </form>

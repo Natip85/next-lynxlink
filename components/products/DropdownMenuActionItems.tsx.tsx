@@ -76,9 +76,6 @@ export function DeleteDropdownItem({
   id: string;
   images: ImageType[];
 }) {
-  console.log("ID>>>", id);
-  console.log("IMGS>>>", images);
-
   const router = useRouter();
   const { toast } = useToast();
   const { mutate: deleteProduct, isPending } = useMutation({

@@ -18,7 +18,7 @@ export async function POST(req: Request, res: Response) {
       );
     }
     const body = await req.json();
-    const { name, description, images, priceInCents } =
+    const { name, description, images, priceInCents, color, size } =
       addProductSchema.parse(body);
 
     const product = await db.product.create({
@@ -28,6 +28,8 @@ export async function POST(req: Request, res: Response) {
         description,
         priceInCents,
         images,
+        color,
+        size,
       },
     });
     return NextResponse.json(
@@ -36,6 +38,8 @@ export async function POST(req: Request, res: Response) {
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.log("ERRRRR>>>>>", error);
+
       return NextResponse.json(
         { error: error.issues },
         {
@@ -58,7 +62,7 @@ export async function POST(req: Request, res: Response) {
 export async function PATCH(req: Request, res: Response) {
   try {
     const body = await req.json();
-    const { id, name, description, images, priceInCents } = body;
+    const { id, name, description, images, priceInCents, color, size } = body;
     const product = await db.product.findUnique({ where: { id } });
     if (!product) {
       return NextResponse.json(
@@ -75,6 +79,8 @@ export async function PATCH(req: Request, res: Response) {
         description,
         priceInCents,
         images,
+        color,
+        size,
       },
     });
     return NextResponse.json({ message: "Product updated." }, { status: 200 });

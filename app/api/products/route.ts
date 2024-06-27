@@ -14,12 +14,13 @@ export async function POST(req: Request, res: Response) {
     );
 
     const whereClause: Prisma.ProductWhereInput = {
+      isAvailableForPurchase: true,
       priceInCents: {
-        gte: price[0] * 100, // assuming price is in dollars, converting to cents
-        lte: price[1] * 100, // assuming price is in dollars, converting to cents
+        gte: price[0] * 100,
+        lte: price[1] * 100,
       },
-      ...(color.length > 0 ? { color: { in: color } } : { color: "" }),
-      // Add other filters like size similarly
+      ...(color.length > 0 ? { color: { in: color } } : {}),
+      ...(size.length > 0 ? { size: { in: size } } : {}),
     };
     const orderBy: Prisma.ProductOrderByWithRelationInput =
       sort === "none"

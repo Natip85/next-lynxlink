@@ -9,7 +9,6 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { ExtendedUser } from "@/next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { User2 } from "lucide-react";
 import SignOutButton from "./SignOutButton";

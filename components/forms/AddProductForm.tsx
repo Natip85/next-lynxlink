@@ -16,15 +16,31 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { formatPrice } from "@/lib/formatters";
 import { useEffect, useState } from "react";
-import { Product } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 import { UploadDropzone } from "../uploadthing";
 import Image from "next/image";
-import { Minus } from "lucide-react";
+import { Check, ChevronsUpDown, Minus } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "../ui/use-toast";
 import LoadingCreateProduct from "./LoadingCreateProduct";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { COLOR_FILTERS } from "@/app/(customerFacing)/products/page";
 export type ImageType = {
   key: string;
   name: string;
@@ -32,10 +48,47 @@ export type ImageType = {
   size: number;
   serverData: ServerData;
 };
-
 type ServerData = {
   uploadedBy: string;
 };
+const colors = COLOR_FILTERS.options.map((color) => {
+  return color;
+});
+const AVAIBLE_SIZES = [
+  "XS",
+  "S",
+  "M",
+  "L",
+  "XL",
+  "2XL",
+  "3XL",
+  "35",
+  "35.5",
+  "36",
+  "36.5",
+  "37.5",
+  "38",
+  "38.5",
+  "39",
+  "40",
+  "40.5",
+  "41",
+  "42",
+  "42.5",
+  "43",
+  "44",
+  "44.5",
+  "46",
+  "47",
+  "47.5",
+  "48",
+  "48.5",
+  "49.5",
+  "50.5",
+  "51.5",
+  "52.5",
+] as const;
+
 export default function AddProductForm({
   product,
 }: {
@@ -51,24 +104,26 @@ export default function AddProductForm({
     product?.priceInCents || undefined
   );
   const [isImageLoading, setIsImageLoading] = useState(false);
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(
+    product?.size
+  );
 
-  useEffect(() => {
-    if (product?.images) {
-      setImageData(product?.images as ImageType[]);
-    }
-  }, []);
   const { mutate: createProduct, isPending } = useMutation({
     mutationFn: async ({
       name,
       description,
       priceInCents,
       images,
+      color,
+      size,
     }: z.infer<typeof addProductSchema>) => {
       const response = await axios.post("/api/product", {
         name,
         description,
         priceInCents,
         images,
+        color,
+        size,
       });
 
       return response.data;
@@ -81,6 +136,8 @@ export default function AddProductForm({
       priceInCents,
       images,
       id,
+      color,
+      size,
     }: z.infer<typeof addProductSchema> & { id: string }) => {
       const response = await axios.patch("/api/product", {
         name,
@@ -88,6 +145,8 @@ export default function AddProductForm({
         priceInCents,
         images,
         id,
+        color,
+        size,
       });
 
       return response.data;
@@ -100,8 +159,16 @@ export default function AddProductForm({
       description: product?.description || "",
       images: imageData || undefined,
       priceInCents: product?.priceInCents || 0,
+      color: product?.color || undefined,
+      size: product?.size || undefined,
     },
   });
+  useEffect(() => {
+    if (product?.images) {
+      setImageData(product?.images as ImageType[]);
+      form.setValue("images", product?.images as any);
+    }
+  }, [product?.images]);
   const onSubmit = async (data: z.infer<typeof addProductSchema>) => {
     if (product) {
       //EDIT
@@ -330,6 +397,97 @@ export default function AddProductForm({
             <div className="text-muted-foreground">
               {formatPrice((priceInCents || 0) / 100)}
             </div>
+            <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Product color</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-[200px] justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? colors.find(
+                                (color) => color.value === field.value
+                              )?.label
+                            : "Select a color"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 ">
+                      <Command>
+                        <CommandInput placeholder="Search colors..." />
+                        <CommandEmpty>No color found.</CommandEmpty>
+                        <CommandGroup className="h-[20rem] overflow-y-auto">
+                          {colors.map((color) => (
+                            <CommandList key={color.value}>
+                              <CommandItem
+                                value={color.label}
+                                onSelect={() => {
+                                  form.setValue("color", color.value);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    color.value === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {color.label}
+                              </CommandItem>
+                            </CommandList>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>
+                    This is the color that will be displayed to the user.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="size"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="size">Select a size</FormLabel>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {AVAIBLE_SIZES.map((size, inx) => (
+                      <Button
+                        key={size}
+                        type="button"
+                        onClick={() => {
+                          field.onChange(size);
+                          setSelectedSize(size);
+                        }}
+                        variant={selectedSize === size ? "default" : "outline"}
+                      >
+                        {size}
+                      </Button>
+                    ))}
+                  </div>
+                  <FormDescription>
+                    Choose a size for the product.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <div className="md:w-1/3 md:max-w-80">second section</div>
         </div>

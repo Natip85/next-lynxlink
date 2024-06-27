@@ -15,11 +15,13 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="mt-4 flex justify-between">
         <div>
-          <h3 className="text-sm text-gray-700">{product.name}</h3>
-          <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+          <h3 className="text-sm text-primary">{product.name}</h3>
+          <p className="mt-1 text-sm text-primary">
+            Size {product.size?.toUpperCase()}, {product.color}
+          </p>
         </div>
 
-        <p className="text-sm font-medium text-gray-900">
+        <p className="text-sm font-medium text-primary">
           {formatPrice(product.priceInCents / 100)}
         </p>
       </div>

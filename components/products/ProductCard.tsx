@@ -1,30 +1,52 @@
 import { formatPrice } from "@/lib/formatters";
-import { Product } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 import { ImageType } from "../forms/AddProductForm";
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import Image from "next/image";
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
+import ImageSlider from "../ImageSlider";
+type ProductCardProps = {
+  product: Product;
+};
 
-export default function ProductCard({ product }: { product: Product }) {
-  const productImgs = product.images as ImageType[];
+export default function ProductCard({ product }: ProductCardProps) {
+  const validUrls = product.images
+    .map(({ url }: any) => (typeof url === "string" ? url : url))
+    .filter(Boolean) as string[];
+
   return (
-    <div className="group relative">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-secondary lg:aspect-none group-hover:opacity-75 lg:h-80">
-        <img
-          src={productImgs[0]?.url}
-          alt="product image"
-          className="h-full w-full object-cover object-center"
-        />
-      </div>
-      <div className="mt-4 flex justify-between">
-        <div>
-          <h3 className="text-sm text-primary">{product.name}</h3>
-          <p className="mt-1 text-sm text-primary">
-            Size {product.size?.toUpperCase()}, {product.color}
-          </p>
+    <Card className="flex flex-col gap-4 justify-between border-none shadow-none">
+      <Link
+        className={cn(" h-full w-full cursor-pointer")}
+        href={`/products/${product.id}`}
+      >
+        <div className="flex flex-col w-full ">
+          <ImageSlider urls={validUrls} />
         </div>
-
-        <p className="text-sm font-medium text-primary">
-          {formatPrice(product.priceInCents / 100)}
-        </p>
-      </div>
-    </div>
+        <CardHeader className="p-0">
+          <CardTitle className="text-xl md:text-2xl text-center">
+            {formatPrice(product.priceInCents / 100)}
+          </CardTitle>
+          <CardTitle className="text-lg md:text-xl text-center">
+            {product.name}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex-grow p-0">
+          <p className="line-clamp-2 text-sm text-center px-4">
+            {product.description}...
+          </p>
+          <p className="text-center ">Size: {product.size}</p>
+        </CardContent>
+      </Link>
+    </Card>
   );
 }

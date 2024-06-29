@@ -239,7 +239,7 @@ const SIZE_FILTERS = {
   id: "size",
   name: "Size",
   options: [
-    { value: "XS", label: "SX" },
+    { value: "XS", label: "XS" },
     { value: "S", label: "S" },
     { value: "M", label: "M" },
     { value: "L", label: "L" },
@@ -558,7 +558,7 @@ export default function ProductsPage() {
     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="flex items-baseline justify-between border-b border-secondary pb-6 pt-16">
         <h1 className="text-4xl font-bold tracking-tight text-primary">
-          Product page
+          Original paintings for sale
         </h1>
 
         <div className="flex items-center">
@@ -804,7 +804,7 @@ export default function ProductsPage() {
           </div>
 
           {/* Product grid */}
-          <ul className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <ul className=" lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {products && products.length === 0 ? (
               <EmptyState />
             ) : products ? (

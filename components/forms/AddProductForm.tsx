@@ -492,7 +492,10 @@ export default function AddProductForm({
           <div className="md:w-1/3 md:max-w-80">second section</div>
         </div>
         <div className="mx-auto max-w-5xl p-5 flex items-center justify-end">
-          <Button disabled={isPending || isImageLoading} type="submit">
+          <Button
+            disabled={isPending || isImageLoading || editPending}
+            type="submit"
+          >
             {product ? "Update product" : "Create product"}
           </Button>
         </div>

@@ -9,7 +9,11 @@ import Picture7 from "/public/7.jpeg";
 import Image from "next/image";
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
-export default function ZoomParallax() {
+
+interface ZoomParallaxProps {
+  imgs: string[];
+}
+export default function ZoomParallax({ imgs }: ZoomParallaxProps) {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,
@@ -55,11 +59,26 @@ export default function ZoomParallax() {
   return (
     <div ref={container} className="relative h-[300vh]">
       <div className="sticky overflow-hidden top-0 h-[100vh]">
-        {pictures.map(({ src, scale }, index) => {
+        {imgs.map((src, index) => {
+          const scale = [
+            scale4,
+            scale5,
+            scale6,
+            scale5,
+            scale6,
+            scale8,
+            scale9,
+          ][index % 7];
           return (
             <motion.div key={index} style={{ scale }} className="el">
               <div className="imageContainer">
-                <Image src={src} fill alt="image" placeholder="blur" />
+                <Image
+                  src={src}
+                  fill
+                  alt="image"
+                  // placeholder="blur"
+                  // blurDataURL=""
+                />
               </div>
             </motion.div>
           );

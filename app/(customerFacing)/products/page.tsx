@@ -15,7 +15,6 @@ import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { ProductState } from "@/validations";
 import { ChevronDown, Filter } from "lucide-react";
-import { redirect } from "next/navigation";
 import { useCallback, useState } from "react";
 import debounce from "lodash.debounce";
 import { useQuery } from "@tanstack/react-query";
@@ -24,7 +23,6 @@ import { Product } from "@prisma/client";
 import EmptyState from "@/components/products/EmptyState";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import ProductCard from "@/components/products/ProductCard";
-import { useCurrentUser } from "@/hooks/use-current-User";
 import Link from "next/link";
 
 const SORT_OPTIONS = [

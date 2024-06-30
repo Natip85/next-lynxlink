@@ -2,6 +2,7 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ZoomParallax from "@/components/ZoomParallax";
 import Navbar from "@/components/nav/Navbar";
 import { Button, buttonVariants } from "@/components/ui/button";
+import db from "@/db/db";
 import { ArrowDownToLine, CheckCircle, Leaf } from "lucide-react";
 import Link from "next/link";
 const perks = [
@@ -24,7 +25,27 @@ const perks = [
       "Every asset on our platform is verified by aour tema to insyurace high qualuity statsndrd. Not happy? We offer a 30 day guarantee",
   },
 ];
+async function getParallaxImages() {
+  const products = await db.product.findMany({
+    where: { isAvailableForPurchase: true },
+    orderBy: { createdAt: "desc" },
+    take: 7,
+    select: {
+      images: true, // Assuming images is an array of objects
+    },
+  });
+
+  const images = products
+    .map((product) => product.images[0]?.url)
+    .filter(Boolean); // Get the first image of each product
+
+  return images;
+}
+console.log(await getParallaxImages());
+
 export default async function Home() {
+  const parImgs = await getParallaxImages();
+
   return (
     <>
       <Navbar />
@@ -52,7 +73,7 @@ export default async function Home() {
         </div>
       </MaxWidthWrapper>
       <div className="mt-[10vh] mb-[10vh]">
-        <ZoomParallax />
+        <ZoomParallax imgs={parImgs} />
       </div>
       <section className="border-t border-secondary bg-secondary">
         <MaxWidthWrapper className="py-20">

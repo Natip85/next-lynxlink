@@ -24,6 +24,7 @@ export default async function PurchasePage({
       },
     },
   });
+  //TODO: chnage the below notfound() into a nicer ui
   if (productIds == null) return notFound();
 
   // const discountCode =

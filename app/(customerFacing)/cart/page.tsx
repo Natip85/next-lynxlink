@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Check, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CartPage() {
@@ -14,14 +15,14 @@ export default function CartPage() {
   const { cartProducts, handleRemoveProductFromCart, cartTotalAmount } =
     useCart();
   const [isLoading, seIsLoading] = useState<boolean>(false);
-  if (!cartProducts) {
+  if (cartProducts && !isMounted && cartProducts.length === 0) {
     //TODO: make this nocer
-    return <div>no prods</div>;
+    return redirect("/products");
   }
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  const productIdsString = cartProducts.map((product) => product.id).join("+");
+  const productIdsString = cartProducts?.map((product) => product.id).join("+");
 
   return (
     <div>

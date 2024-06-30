@@ -99,7 +99,7 @@ model Product {
 
   orders                  Order[]
   // downloadVerifications  DownloadVerification[]
-  // discountCodes          DiscountCode[]
+  discountCodes          DiscountCode[]
 }
 
 model Order {
@@ -112,6 +112,22 @@ model Order {
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   products           Product[]
   // product           Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
-  // discountCodeId String?
-  // discountCode   DiscountCode? @relation(fields: [discountCodeId], references: [id], onDelete: Restrict)
+  discountCodeId String?
+  discountCode   DiscountCode? @relation(fields: [discountCodeId], references: [id], onDelete: Restrict)
+}
+
+model DiscountCode {
+  id             String           @id @default(uuid())
+  code           String           @unique
+  discountAmount Int
+  discountType   String
+  uses           Int              @default(0)
+  isActive       Boolean          @default(true)
+  allProducts    Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  limit          Int?
+  expiresAt      DateTime?
+
+  products Product[]
+  orders   Order[]
 }

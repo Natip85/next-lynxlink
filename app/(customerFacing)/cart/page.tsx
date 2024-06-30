@@ -14,7 +14,7 @@ export default function CartPage() {
   const { cartProducts, handleRemoveProductFromCart, cartTotalAmount } =
     useCart();
   const [isLoading, seIsLoading] = useState<boolean>(false);
-  if (!cartProducts || cartProducts.length === 0) {
+  if (!cartProducts) {
     //TODO: make this nocer
     return <div>no prods</div>;
   }
@@ -181,19 +181,6 @@ export default function CartPage() {
             </div>
 
             <div className="mt-6">
-              {/* <Button
-                disabled={
-                  (cartProducts && cartProducts.length === 0) || isLoading
-                }
-                onClick={() => {}}
-                className="w-full"
-                size="lg"
-              >
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin mr-1.5" />
-                ) : null}
-                Checkout
-              </Button> */}
               <Button
                 asChild
                 disabled={

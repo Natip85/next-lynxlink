@@ -14,13 +14,10 @@ export default async function PurchasePage({
   params: { id: string };
   // searchParams: { coupon?: string };
 }) {
-  console.log("PRODIDs>>>>>", id);
   const decodedId = decodeURIComponent(id);
-  console.log("DECODEDID>>>", decodedId);
 
   // Split the decoded id parameter to get the product IDs
   const productIds = decodedId.split("+");
-  console.log("GOTTEN IDS>>>", productIds);
 
   const products = await db.product.findMany({
     where: {
@@ -30,7 +27,6 @@ export default async function PurchasePage({
     },
   });
   if (productIds == null) return notFound();
-  console.log("DISPROD>>>", products);
 
   // const discountCode =
   //   coupon == null ? undefined : await getDiscountCode(coupon, product.id);

@@ -15,12 +15,29 @@ export async function POST(req: NextRequest) {
   );
 
   if (event.type === "charge.succeeded") {
-    const charge = event.data.object;
-    const productIdsString = charge.metadata.productIds;
+    const charge = event.data.object as Stripe.Charge;
+    console.log("CHARGE>>>", charge);
+
+    const productIdsString = charge.metadata.productId;
+    console.log("productIdString>>>>", productIdsString);
+
+    if (!productIdsString) {
+      return new NextResponse("Bad Request: No productIds in metadata", {
+        status: 400,
+      });
+    }
+
     const productIds = productIdsString.split(",");
+    console.log("productIds>>>>", productIds);
+
     const email = charge.billing_details.email;
+    console.log("EMAIL>>>>>", email);
+
     const pricePaidInCents = charge.amount;
 
+    if (!productIds.length || !email) {
+      return new NextResponse("Bad Request", { status: 400 });
+    }
     const products = await db.product.findMany({
       where: {
         id: {
@@ -28,8 +45,12 @@ export async function POST(req: NextRequest) {
         },
       },
     });
-    if (products == null || email == null) {
-      return new NextResponse("Bad Request", { status: 400 });
+    console.log("PRODUCTS>>>>", products);
+
+    if (!products.length) {
+      return new NextResponse("Bad Request: Products not found", {
+        status: 400,
+      });
     }
     const userFields = {
       email,
@@ -71,7 +92,8 @@ export async function POST(req: NextRequest) {
     //     />
     //   ),
     // });
+    return new NextResponse(JSON.stringify(user), { status: 200 });
   }
 
-  return new NextResponse();
+  return new NextResponse("Unhandled event type", { status: 400 });
 }

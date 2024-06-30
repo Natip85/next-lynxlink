@@ -29,8 +29,6 @@ export default function ProductDetailsClient({
     color: product.color,
     size: product.size,
   });
-  console.log("CARTPRODUCT>>>>", cartProduct);
-  console.log("CARTPRODUCTSSS>>>>>", cartProducts);
   const [isProductInCart, setIsProductInCart] = useState(false);
   const BREADCRUMBS = [
     {

@@ -13,8 +13,6 @@ interface ImageSliderProps {
 }
 
 export default function ImageSlider({ urls }: ImageSliderProps) {
-  //   console.log("URLS>>>", urls);
-
   const [swiper, setSwiper] = useState<null | SwiperType>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 

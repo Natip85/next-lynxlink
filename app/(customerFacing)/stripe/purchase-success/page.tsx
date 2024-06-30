@@ -36,7 +36,7 @@ export default async function SuccessPage({
         {isSuccess ? "Success!" : "Error!"}
       </h1>
       <div className="flex gap-4 items-center">
-        {products.map((prod) => (
+        {products.map((prod: any) => (
           <div className="aspect-video flex-shrink-0 w-1/3 relative">
             <Image
               src={prod.images[0]?.url}

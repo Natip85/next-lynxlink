@@ -87,7 +87,11 @@ export default function Cart() {
               aria-hidden="true"
               className="relative mb-4 h-60 w-60 text-muted-foreground"
             >
-              <Image src="/empty-cart.png" fill alt="empty shopping cart" />
+              <Image
+                src="/empty-side-cart.png"
+                fill
+                alt="empty shopping cart"
+              />
             </div>
             <div className="text-xl font-semibold">Your cart is empty</div>
             <SheetTrigger asChild>

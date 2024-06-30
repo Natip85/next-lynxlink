@@ -33,9 +33,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           <ImageSlider urls={validUrls} />
         </div>
         <CardHeader className="p-0">
-          <CardTitle className="text-xl md:text-2xl text-center">
-            {formatPrice(product.priceInCents / 100)}
-          </CardTitle>
           <CardTitle className="text-lg md:text-xl text-center">
             {product.name}
           </CardTitle>
@@ -44,6 +41,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           <p className="line-clamp-2 text-sm text-center px-4">
             {product.description}...
           </p>
+          {/* <p className="text-xl md:text-2xl text-center">
+            {formatPrice(product.priceInCents / 100)}
+          </p> */}
           <p className="text-center ">Size: {product.size}</p>
         </CardContent>
       </Link>

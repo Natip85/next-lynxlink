@@ -1,4 +1,4 @@
-import LoginForm from "@/components/auth/LoginForm";
+import LoginForm from "@/components/forms/LoginForm";
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 export const metadata = {

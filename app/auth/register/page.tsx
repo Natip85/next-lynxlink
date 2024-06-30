@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/auth/RegisterForm";
+import RegisterForm from "@/components/forms/RegisterForm";
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 export const metadata = {

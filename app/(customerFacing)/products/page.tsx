@@ -25,6 +25,7 @@ import EmptyState from "@/components/products/EmptyState";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import ProductCard from "@/components/products/ProductCard";
 import { useCurrentUser } from "@/hooks/use-current-User";
+import Link from "next/link";
 
 const SORT_OPTIONS = [
   { name: "None", value: "none" },
@@ -280,11 +281,23 @@ const SUBCATEGORIES = [
   { name: "Sweatshirts", selected: false, href: "#" },
   { name: "Accessories", selected: false, href: "#" },
 ];
+const BREADCRUMBS = [
+  {
+    id: 1,
+    name: "Home",
+    href: "/",
+  },
+  {
+    id: 2,
+    name: "Products",
+    href: "/products",
+  },
+];
 export default function ProductsPage() {
-  const user = useCurrentUser();
-  if (!user) {
-    return redirect("/");
-  }
+  // const user = useCurrentUser();
+  // if (!user) {
+  //   return redirect("/");
+  // }
   const [filter, setFilter] = useState<ProductState>({
     color: [
       "beige",
@@ -557,10 +570,35 @@ export default function ProductsPage() {
   return (
     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="flex items-baseline justify-between border-b border-secondary pb-6 pt-16">
-        <h1 className="text-4xl font-bold tracking-tight text-primary">
-          Original paintings for sale
-        </h1>
-
+        <div className="flex flex-col gap-3">
+          <ol className="flex items-center space-x-2">
+            {BREADCRUMBS.map((breadcrumb, i) => (
+              <li key={breadcrumb.href}>
+                <div className="flex items-center text-sm">
+                  <Link
+                    href={breadcrumb.href}
+                    className="font-medium text-sm text-muted-foreground hover:text-primary"
+                  >
+                    {breadcrumb.name}
+                  </Link>
+                  {i !== BREADCRUMBS.length - 1 ? (
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      className="ml-2 h-5 w-5 flex-shrink-0 text-muted-foreground"
+                    >
+                      <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+                    </svg>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ol>
+          <h1 className="text-4xl font-bold tracking-tight text-primary">
+            Original paintings for sale
+          </h1>
+        </div>
         <div className="flex items-center">
           <DropdownMenu>
             <DropdownMenuTrigger className="group inline-flex justify-center text-sm font-medium text-primary hover:text-primary/50">

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { motion } from "framer-motion";
-import CardWrapper from "./CardWrapper";
+import CardWrapper from "../auth/CardWrapper";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";

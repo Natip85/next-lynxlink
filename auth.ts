@@ -4,6 +4,7 @@ import db from "./db/db";
 import { getUserById } from "./lib/auth";
 import { UserRole } from "@prisma/client";
 import authConfig from "./auth.config";
+import { redirect } from "next/navigation";
 
 export const {
   auth,

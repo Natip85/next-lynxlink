@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
+import CartProvider from "@/components/CartProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,20 +34,22 @@ export default async function RootLayout({
               inter.className
             )}
           >
-            <main className="relative flex flex-col min-h-screen">
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                {/* <Navbar /> */}
-                <div className="flex-grow flex-1">
-                  {children} <Toaster />
-                </div>
-                <Footer />
-              </ThemeProvider>
-            </main>
+            <CartProvider>
+              <main className="relative flex flex-col min-h-screen">
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  {/* <Navbar /> */}
+                  <div className="flex-grow flex-1">
+                    {children} <Toaster />
+                  </div>
+                  <Footer />
+                </ThemeProvider>
+              </main>
+            </CartProvider>
           </body>
         </html>
       </SessionProvider>

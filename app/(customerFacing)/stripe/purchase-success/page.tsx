@@ -2,6 +2,7 @@ import ConfettiEffect from "@/components/ConfettiEffect";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
 import db from "@/db/db";
+import { currentUser } from "@/lib/auth";
 import { formatPrice } from "@/lib/formatters";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +16,7 @@ export default async function SuccessPage({
 }: {
   searchParams: { payment_intent: string };
 }) {
+  const user = await currentUser();
   const paymentIntent = await stripe.paymentIntents.retrieve(
     searchParams.payment_intent
   );
@@ -39,6 +41,10 @@ export default async function SuccessPage({
           ? "Thank you for your purchase!"
           : "Error: Something went wrong!"}
       </h1>
+      <p className="text-sm text-center">
+        Your purchase receipt has been sent to{" "}
+        <span className="font-bold">{user?.email}</span>
+      </p>
       <div className="text-center">
         <Button className="mt-4" size="lg" asChild>
           {isSuccess ? (

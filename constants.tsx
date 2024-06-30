@@ -26,7 +26,7 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     icon: (props) => <Users2Icon {...props} />,
   },
   {
-    title: "Products",
+    title: "All Products",
     path: "/admin/products",
     icon: (props) => <TagsIcon {...props} />,
     submenu: true,

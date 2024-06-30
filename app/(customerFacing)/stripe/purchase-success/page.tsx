@@ -1,3 +1,5 @@
+import ConfettiEffect from "@/components/ConfettiEffect";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
 import db from "@/db/db";
 import { formatPrice } from "@/lib/formatters";
@@ -31,7 +33,7 @@ export default async function SuccessPage({
   const isSuccess = paymentIntent.status === "succeeded";
 
   return (
-    <div className="max-w-5xl w-full pt-10 mx-auto space-y-8">
+    <MaxWidthWrapper className="flex flex-col gap-6 my-10">
       <h1 className="text-4xl text-center font-bold">
         {isSuccess
           ? "Thank you for your purchase!"
@@ -70,7 +72,8 @@ export default async function SuccessPage({
           </div>
         ))}
       </div>
-    </div>
+      <ConfettiEffect />
+    </MaxWidthWrapper>
   );
 }
 

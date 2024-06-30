@@ -24,6 +24,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import MaxWidthWrapper from "../MaxWidthWrapper";
+import { useCart } from "@/hooks/use-cart";
 
 type CheckoutFormProps = {
   products: {
@@ -104,7 +105,7 @@ function Form({
   const router = useRouter();
   const pathname = usePathname();
   //   const coupon = searchParams.get("coupon");
-
+  const { handleClearCart } = useCart();
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
@@ -145,7 +146,10 @@ function Form({
           setErrorMessage("An unknown error occurred");
         }
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
+    handleClearCart();
   }
 
   return (

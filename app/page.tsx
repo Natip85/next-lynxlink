@@ -36,12 +36,11 @@ async function getParallaxImages() {
   });
 
   const images = products
-    .map((product) => product.images[0]?.url)
+    .map((product: any) => product.images[0]?.url)
     .filter(Boolean); // Get the first image of each product
 
   return images;
 }
-console.log(await getParallaxImages());
 
 export default async function Home() {
   const parImgs = await getParallaxImages();

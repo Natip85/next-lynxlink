@@ -31,43 +31,44 @@ export default async function SuccessPage({
   const isSuccess = paymentIntent.status === "succeeded";
 
   return (
-    <div className="max-w-5xl w-full mx-auto space-y-8">
-      <h1 className="text-4xl font-bold">
-        {isSuccess ? "Success!" : "Error!"}
+    <div className="max-w-5xl w-full pt-10 mx-auto space-y-8">
+      <h1 className="text-4xl text-center font-bold">
+        {isSuccess
+          ? "Thank you for your purchase!"
+          : "Error: Something went wrong!"}
       </h1>
-      <div className="flex gap-4 items-center">
+      <div className="text-center">
+        <Button className="mt-4" size="lg" asChild>
+          {isSuccess ? (
+            <a href={"/orders"}>View order history</a>
+          ) : (
+            <Link href={"#"}>Try Again</Link>
+          )}
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
         {products.map((prod: any) => (
-          <div className="aspect-video flex-shrink-0 w-1/3 relative">
-            <Image
-              src={prod.images[0]?.url}
-              fill
-              alt={prod.name}
-              className="object-cover"
-            />
+          <div>
+            <div
+              key={prod.id}
+              className="aspect-video flex-shrink-0 w-full relative"
+            >
+              <Image
+                src={prod.images[0]?.url}
+                fill
+                alt={prod.name}
+                className="object-cover"
+              />
+            </div>
+
+            <div>
+              <h1 className="text-2xl font-bold">{prod.name}</h1>
+              <div className="text-lg">
+                {formatPrice(prod.priceInCents / 100)}
+              </div>
+            </div>
           </div>
         ))}
-
-        <div>
-          <div className="text-lg">
-            {/* {formatPrice(products.priceInCents / 100)} */}
-            price here
-          </div>
-          <h1 className="text-2xl font-bold">
-            prod name here
-            {/* {product.name} */}
-          </h1>
-          <div className="line-clamp-3 text-muted-foreground">
-            {/* {product.description} */}
-            prod description here
-          </div>
-          <Button className="mt-4" size="lg" asChild>
-            {isSuccess ? (
-              <a href={"#"}>Download</a>
-            ) : (
-              <Link href={"#"}>Try Again</Link>
-            )}
-          </Button>
-        </div>
       </div>
     </div>
   );

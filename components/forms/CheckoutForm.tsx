@@ -23,6 +23,7 @@ import { FormEvent, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import MaxWidthWrapper from "../MaxWidthWrapper";
 
 type CheckoutFormProps = {
   products: {
@@ -42,30 +43,33 @@ export function CheckoutForm({ products }: CheckoutFormProps) {
   const prodIds = products.map((prod) => {
     return prod.id;
   });
-  const prodImages = products.map((img) => {
-    return img.images[0].url;
-  });
 
   const purchaseTotal = products.reduce(
     (total, product) => total + product.priceInCents,
     0
   );
   return (
-    <div className="max-w-5xl w-full mx-auto space-y-8">
-      <div className="flex gap-4 items-center">
-        {prodImages.map((imgs) => (
-          <div key={imgs} className="aspect-video flex-shrink-0 w-1/3 relative">
-            <Image src={imgs} fill alt={imgs} className="object-cover" />
+    <MaxWidthWrapper className="p-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 my-8">
+        {products.map((prod) => (
+          <div key={prod.id}>
+            <div className="aspect-video flex-shrink-0 w-1/2 relative">
+              <Image
+                src={prod.images[0].url}
+                fill
+                alt={prod.images[0].name}
+                className="object-cover"
+              />
+            </div>
+            <div>
+              <div className="text-lg">{formatPrice(purchaseTotal / 100)}</div>
+              <h1 className="text-2xl font-bold">{prod.name}</h1>
+              <div className="line-clamp-3 text-muted-foreground">
+                {prod.description}
+              </div>
+            </div>
           </div>
         ))}
-
-        <div>
-          <div className="text-lg">{formatPrice(purchaseTotal / 100)}</div>
-          {/* <h1 className="text-2xl font-bold">{product.name}</h1>
-          <div className="line-clamp-3 text-muted-foreground">
-            {product.description}
-          </div> */}
-        </div>
       </div>
       <Elements
         options={{ amount: purchaseTotal, mode: "payment", currency: "usd" }}
@@ -73,7 +77,7 @@ export function CheckoutForm({ products }: CheckoutFormProps) {
       >
         <Form priceInCents={purchaseTotal} productIds={prodIds} />
       </Elements>
-    </div>
+    </MaxWidthWrapper>
   );
 }
 

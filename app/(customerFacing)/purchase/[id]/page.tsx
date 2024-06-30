@@ -2,7 +2,6 @@ import { CheckoutForm } from "@/components/forms/CheckoutForm";
 import db from "@/db/db";
 import { notFound } from "next/navigation";
 import Stripe from "stripe";
-// import { CheckoutForm } from "./_components/CheckoutForm";
 // import { usableDiscountCodeWhere } from "@/lib/discountCodeHelper";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
@@ -16,7 +15,6 @@ export default async function PurchasePage({
 }) {
   const decodedId = decodeURIComponent(id);
 
-  // Split the decoded id parameter to get the product IDs
   const productIds = decodedId.split("+");
 
   const products = await db.product.findMany({
@@ -31,10 +29,7 @@ export default async function PurchasePage({
   // const discountCode =
   //   coupon == null ? undefined : await getDiscountCode(coupon, product.id);
 
-  return (
-    // <div>check out form here</div>
-    <CheckoutForm products={products} />
-  );
+  return <CheckoutForm products={products} />;
 }
 
 // function getDiscountCode(coupon: string, productId: string) {

@@ -294,7 +294,7 @@ const BREADCRUMBS = [
   },
 ];
 export default function ProductsPage() {
-  // const user = useCurrentUser();
+  // const user = await useCurrentUser();
   // if (!user) {
   //   return redirect("/");
   // }

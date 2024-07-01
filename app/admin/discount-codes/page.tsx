@@ -34,10 +34,6 @@ import {
   ActiveDiscountCodeToggleDropdownItem,
   DeleteDiscountCodeDropdownItem,
 } from "@/components/discountCodes/DropdownMenuActionItems";
-// import {
-//   ActiveToggleDropdownItem,
-//   DeleteDropdownItem,
-// } from "./_components/DiscountCodeActions";
 
 const WHERE_EXPIRED: Prisma.DiscountCodeWhereInput = {
   OR: [

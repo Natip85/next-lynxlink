@@ -1,3 +1,4 @@
+import db from "@/db/db";
 import { addDicountCodeSchema } from "@/validations";
 import { Prisma } from "@prisma/client";
 import axios from "axios";
@@ -7,15 +8,33 @@ export async function POST(req: Request, res: Response) {
   try {
     const body = await req.json();
 
-    const { code, discountType, limit, expiresAt, allProducts, productIds } =
-      addDicountCodeSchema.parse(body);
-    console.log("code>>>>", code);
-    console.log("discountType>>>>", discountType);
-    console.log("limit>>>>", limit);
-    console.log("expiresAt>>>>", expiresAt);
-    console.log("allProducts>>>>", allProducts);
-    console.log("productIds>>>>", productIds);
-    return NextResponse.json({ message: "yessss" }, { status: 200 });
+    const {
+      code,
+      discountType,
+      discountAmount,
+      limit,
+      expiresAt,
+      allProducts,
+      productIds,
+    } = addDicountCodeSchema.parse(body);
+    await db.discountCode.create({
+      data: {
+        code,
+        discountAmount,
+        discountType,
+        allProducts,
+        products:
+          productIds != null
+            ? { connect: productIds.map((id) => ({ id })) }
+            : undefined,
+        expiresAt,
+        limit,
+      },
+    });
+    return NextResponse.json(
+      { message: `Discount code ${code} created successfully` },
+      { status: 200 }
+    );
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.issues }, { status: 400 });

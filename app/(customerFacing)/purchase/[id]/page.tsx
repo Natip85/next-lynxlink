@@ -1,6 +1,6 @@
 import { CheckoutForm } from "@/components/forms/CheckoutForm";
 import db from "@/db/db";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Stripe from "stripe";
 // import { usableDiscountCodeWhere } from "@/lib/discountCodeHelper";
 
@@ -13,6 +13,10 @@ export default async function PurchasePage({
   params: { id: string };
   // searchParams: { coupon?: string };
 }) {
+  if (!id) {
+    // If no id is present, redirect to the desired page
+    return redirect("/cart");
+  }
   const decodedId = decodeURIComponent(id);
 
   const productIds = decodedId.split("+");
@@ -25,7 +29,7 @@ export default async function PurchasePage({
     },
   });
   //TODO: chnage the below notfound() into a nicer ui or other logic
-  if (productIds == null) return notFound();
+  if (productIds == null) return redirect("/cart");
 
   // const discountCode =
   //   coupon == null ? undefined : await getDiscountCode(coupon, product.id);

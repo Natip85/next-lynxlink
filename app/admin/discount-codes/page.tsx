@@ -30,6 +30,10 @@ import {
   formatNumber,
 } from "@/lib/formatters";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import {
+  ActiveDiscountCodeToggleDropdownItem,
+  DeleteDiscountCodeDropdownItem,
+} from "@/components/discountCodes/DropdownMenuActionItems";
 // import {
 //   ActiveToggleDropdownItem,
 //   DeleteDropdownItem,
@@ -81,7 +85,7 @@ export default async function DiscountCodesPage() {
   return (
     <MaxWidthWrapper>
       <div className="flex justify-between items-center gap-4 my-5">
-        <h2 className="text-4xl font-bold">Coupons</h2>
+        <h2 className="text-4xl font-bold">Discount codes</h2>
         <Button asChild>
           <Link href="/admin/discount-codes/new">Add Coupon</Link>
         </Button>
@@ -92,7 +96,7 @@ export default async function DiscountCodesPage() {
       />
 
       <div className="mt-8">
-        <h2 className="text-xl font-bold">Expired Coupons</h2>
+        <h2 className="text-xl font-bold">Expired discount codes</h2>
         <DiscountCodesTable discountCodes={expiredDiscountCodes} isInactive />
       </div>
     </MaxWidthWrapper>
@@ -177,17 +181,17 @@ function DiscountCodesTable({
                 <DropdownMenuContent>
                   {canDeactivate && (
                     <>
-                      {/* <ActiveToggleDropdownItem
+                      <ActiveDiscountCodeToggleDropdownItem
                         id={discountCode.id}
                         isActive={discountCode.isActive}
-                      /> */}
+                      />
                       <DropdownMenuSeparator />
                     </>
                   )}
-                  {/* <DeleteDropdownItem
+                  <DeleteDiscountCodeDropdownItem
                     id={discountCode.id}
-                    disabled={discountCode._count.orders > 0}
-                  /> */}
+                    // disabled={discountCode._count.orders > 0}
+                  />
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>

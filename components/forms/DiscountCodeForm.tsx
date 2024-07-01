@@ -23,12 +23,14 @@ import MaxWidthWrapper from "../MaxWidthWrapper";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function DiscountCodeForm({
   products,
 }: {
   products: { name: string; id: string }[];
 }) {
+  const router = useRouter();
   const [allProducts, setAllProducts] = useState(true);
   const today = new Date();
   today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
@@ -61,7 +63,7 @@ export default function DiscountCodeForm({
     defaultValues: {
       code: "",
       discountType: DiscountCodeType.PERCENTAGE,
-      discountAmount: 1,
+      discountAmount: undefined,
       limit: undefined,
       expiresAt: undefined,
       allProducts: true,
@@ -86,8 +88,7 @@ export default function DiscountCodeForm({
           description: message,
           variant: "success",
         });
-        // router.push(`/admin/products/${product.id}/edit`);
-        // router.refresh();
+        router.push(`/admin/discount-codes`);
       },
     });
   }
@@ -96,7 +97,7 @@ export default function DiscountCodeForm({
 
   return (
     <MaxWidthWrapper className="my-10 max-w-4xl">
-      <h2 className="text-4xl font-bold">Add Coupon</h2>
+      <h2 className="text-4xl font-bold my-5">Add discount code</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-8">
@@ -105,7 +106,7 @@ export default function DiscountCodeForm({
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="code">Code name</FormLabel>
+                  <FormLabel htmlFor="code">Discount code name</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -121,7 +122,9 @@ export default function DiscountCodeForm({
               name="discountType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="discountType">Discount type</FormLabel>
+                  <FormLabel htmlFor="discountType">
+                    Discount code type
+                  </FormLabel>
                   <FormControl>
                     <RadioGroup
                       id="discountType"
@@ -155,7 +158,7 @@ export default function DiscountCodeForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel htmlFor="discountAmount">
-                    Discount amount
+                    Discount code amount
                   </FormLabel>
                   <FormControl>
                     <Input {...field} type="number" min={0} />
@@ -169,7 +172,7 @@ export default function DiscountCodeForm({
               name="limit"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="limit">Limit</FormLabel>
+                  <FormLabel htmlFor="limit">Discount code limit</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" id="limit" min={0} />
                   </FormControl>
@@ -181,7 +184,7 @@ export default function DiscountCodeForm({
               )}
             />
             <div className="space-y-2">
-              <Label htmlFor="expiresAt">Expiration</Label>
+              <Label htmlFor="expiresAt">Discount code expiration</Label>
               <Input
                 type="datetime-local"
                 id="expiresAt"

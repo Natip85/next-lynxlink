@@ -76,6 +76,10 @@ export default async function Navbar() {
                     <Cart />
                   </div>
                 </div>
+
+                <div>
+                  <NavbarModeToggle />
+                </div>
                 {user?.role === UserRole.ADMIN && (
                   <Link
                     href={"/admin"}
@@ -84,9 +88,6 @@ export default async function Navbar() {
                     Go to admin
                   </Link>
                 )}
-                <div>
-                  <NavbarModeToggle />
-                </div>
               </div>
             </div>
           </div>

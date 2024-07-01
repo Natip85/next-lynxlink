@@ -1,4 +1,3 @@
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import DiscountCodeForm from "@/components/forms/DiscountCodeForm";
 import db from "@/db/db";
 
@@ -9,9 +8,8 @@ export default async function NewDiscountCodePage() {
   });
 
   return (
-    <MaxWidthWrapper className="my-10">
-      <h2 className="text-4xl font-bold">Add Coupon</h2>
+    <>
       <DiscountCodeForm products={products} />
-    </MaxWidthWrapper>
+    </>
   );
 }

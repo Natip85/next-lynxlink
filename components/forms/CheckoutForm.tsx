@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { formatPrice } from "@/lib/formatters";
+import { formatDiscountCode, formatPrice } from "@/lib/formatters";
 import {
   Elements,
   LinkAuthenticationElement,
@@ -85,15 +85,15 @@ export function CheckoutForm({ products }: CheckoutFormProps) {
 function Form({
   priceInCents,
   productIds,
-}: //   discountCode,
-{
+  discountCode,
+}: {
   priceInCents: number;
   productIds: string[];
-  //   discountCode?: {
-  //     id: string;
-  //     discountAmount: number;
-  //     discountType: string;
-  //   };
+  discountCode?: {
+    id: string;
+    discountAmount: number;
+    discountType: string;
+  };
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -101,10 +101,10 @@ function Form({
   const [errorMessage, setErrorMessage] = useState<string>();
   const [email, setEmail] = useState<string>();
   const discountCodeRef = useRef<HTMLInputElement>(null);
-  //   const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  //   const coupon = searchParams.get("coupon");
+  const coupon = searchParams.get("coupon");
   const { handleClearCart } = useCart();
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -159,9 +159,9 @@ function Form({
           <CardTitle>Checkout</CardTitle>
           <CardDescription className="text-destructive">
             {errorMessage && <div>{errorMessage}</div>}
-            {/* {coupon != null && discountCode == null && (
+            {coupon != null && discountCode == null && (
               <div>Invalid discount code</div>
-            )} */}
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -171,7 +171,7 @@ function Form({
               onChange={(e) => setEmail(e.value.email)}
             />
           </div>
-          {/* <div className="space-y-2 mt-4">
+          <div className="space-y-2 mt-4">
             <Label htmlFor="discountCode">Coupon</Label>
             <div className="flex gap-4 items-center">
               <Input
@@ -198,7 +198,7 @@ function Form({
                 </div>
               )}
             </div>
-          </div> */}
+          </div>
         </CardContent>
         <CardFooter>
           <Button

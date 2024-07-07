@@ -8,10 +8,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export default async function PurchasePage({
   params: { id },
-}: // searchParams: { coupon },
-{
+  searchParams: { coupon },
+}: {
   params: { id: string };
-  // searchParams: { coupon?: string };
+  searchParams: { coupon?: string };
 }) {
   if (!id) {
     // If no id is present, redirect to the desired page
